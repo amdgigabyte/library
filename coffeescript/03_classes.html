@@ -24,16 +24,13 @@
 
 
 <h1>Classes</h1>
+<h1>CoffeeScript中的类</h1>
 
 <p>Classes in JavaScript seem to have the kind of effect that cloves of garlic have to Dracula for some purists; although, let's be honest, if you're that way inclined, you're unlikely to be reading a book on CoffeeScript. However, it turns out that classes are just as damn useful in JavaScript as they are in other languages and CoffeeScript provides a great abstraction.</p>
-<p>类在javascritp中发挥的功效很大，就像对付吸血鬼的大蒜头一样，
-不过话说回来，如果你有这种想法，你很可能不会去看一本coffeescript的书。然而，类
-在javascript只是表现的和它在别的语言里面一样的作用，而coffeescript提供了
-更好的抽象</p>
+<p>类在javascritp中发挥的功效很大，就像对付吸血鬼的大蒜头一样，不过话说回来，如果你有这种想法，你很可能不会去看一本coffeescript的书。然而，类在javascript无非只是表现的和它在别的语言里面一样的作用，而coffeescript提供了更好的抽象</p>
 <p>Behind the scenes, CoffeeScript is using JavaScript's native prototype to create classes; adding a bit of syntactic sugar for static property inheritance and context persistence. As a developer all that's exposed to you is the <code>class</code> keyword.</p>
 <p>
-CoffeeScript使用了javascript原生的原形来创建类，并且添加了一些静态属性和
-保持作用域上的语法糖。而这一切都通过 <code>class</code> 关键字提供给开发者</p>
+CoffeeScript使用了javascript原生的原形来创建类，并且添加了一些静态属性和保持作用域上的语法糖。而这一切都通过 <code>class</code> 关键字提供给开发者</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -47,8 +44,7 @@ CoffeeScript使用了javascript原生的原形来创建类，并且添加了一�
 </code></pre>
 
 <p>Defining constructors (functions that get invoked upon instantiation) is simple, just use a function named <code>constructor</code>. This is akin to using Ruby's <code>initialize</code> or Python's <code>__init__</code>.</p>
-<p> 定义构造函数非常简单，只需定义一个 <code>constructor</code>函数.
-这就像我们使用Ruby的 <code>initialize</code> 或者 Python 的 <code>__init__</code>.</p>
+<p> 定义构造函数非常简单，只需定义一个 <code>constructor</code>函数.这就像我们使用Ruby的 <code>initialize</code> 或者 Python 的 <code>__init__</code>.</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -57,10 +53,7 @@ CoffeeScript使用了javascript原生的原形来创建类，并且添加了一�
 </code></pre>
 
 <p>In fact, CoffeeScript provides a shorthand for the common pattern of setting instance properties. By prefixing argument's with <code>@</code>, CoffeeScript will automatically set the arguments as instance properties in the constructor. Indeed, this shorthand will also work for normal functions outside classes. The example below is equivalent to the last example, where we set the instance properties manually.</p>
-<p>事实上，CoffeeScript提供了一种设定实例属性的缩写方式。只需要在参数前加上
-@,CoffeeScript会自动的在构造函数中设定实例的属性,
-事实上，这个缩写方式也适用于普通的类之外的函数。下面的这个例子和我们之前
-手动设定实例属性的例子是等价的</p>
+<p>事实上，CoffeeScript提供了一种设定实例属性的缩写方式。只需要在参数前加上@,CoffeeScript会自动的在构造函数中设定实例的属性,事实上，这个缩写方式也适用于普通的类之外的函数。下面的这个例子和我们之前手动设定实例属性的例子是等价的</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -78,8 +71,7 @@ alert "Animal is a #{animal.name}"
 <h2>Instance properties</h2>
 <h2>实例属性</h2>
 <p>Adding additional instance properties to a class is very straightforward, it's exactly the syntax as adding properties onto an object. Just make sure properties are indented correctly inside the class body.</p>
-<p>给一个类添加额外的实例方法非常的简单。它与对一个对象添加属性的语法一样。
-只是正确的把方法添加在class之中</p>
+<p>给一个类添加额外的实例方法非常的简单。它与对一个对象添加属性的语法一样。只是正确的把方法添加在class之中</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -92,11 +84,8 @@ animal.sell(new Customer)
 </code></pre>
 
 <p>Context changes are rife within JavaScript, and earlier in the Syntax chapter we talked about how CoffeeScript can lock the value of <code>this</code> to a particular context using a fat arrow function: <code>=&gt;</code>. This ensures that whatever context a function is called under, it'll always execute inside the context it was created in. CoffeeScript has extended support for fat arrows to classes, so by using a fat arrow for an instance method you'll ensure that it's invoked in the correct context, and that <code>this</code> is always equal to the current instance.</p>
-<p>作用域的改变在Javascript中非常普遍，在之前的语法章节，我们谈及了
-CoffeeScript可以通过
-<code>=&gt;</code>
-锁定this的值到一个固定的作用域上面。这就确保了不论函数在什么作用域下运行，
-他总会在他创建时的作用域下执行。 </p>
+<p>作用域的改变在Javascript中非常普遍，在之前的语法章节，我们谈及了CoffeeScript可以通过<code>=&gt;</code>
+锁定this的值到一个固定的作用域上面。这就确保了不论函数在什么作用域下运行，他总会在他创建时的作用域下执行。 </p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -110,11 +99,13 @@ $("#sell").click(animal.sell)
 </code></pre>
 
 <p>As demonstrated in the example above, this is especially useful in event callbacks. Normally the <code>sell()</code> function would be invoked in the context of the <code>#sell</code> element. However, by using fat arrows for <code>sell()</code>, we're ensuring the correct context is being maintained, and that <code>this.price</code> equals <code>5</code>.</p>
-
+<p> 上面的例子已经说明，this在事件回调中非常有用。通常来说, <code>sell</code>函数只会在 <code> #sell </code>的元素的作用域下面执行。不过通过对sell函数使用<code>=&gt;</code> 符，我们可以保证它的作用域一直不变。并且
+<code>this.price</code>始终等于5.</p>
 <h2>Static properties</h2>
+<h2>静态属性</h2>
 
 <p>How about defining class (i.e. static) properties? Well, it turns out that inside a class definition, <code>this</code> refers to the class object. In other words you can set class properties by setting them directly on <code>this</code>.</p>
-
+<p>那么如何定义类的方法(静态方法)呢？很简单，在一个类的定义体中，<code>this</code>指向这个类对象</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -124,7 +115,7 @@ Animal.find("Parrot")
 </code></pre>
 
 <p>In fact, as you may remember, CoffeeScript aliases <code>this</code> to <code>@</code>, which lets you write static properties even more succinctly:</p>
-
+<p>你可能还记得，CoffeeScript通过<code>@</code>符来引用<code>this</code>，这样你能更简洁的编写今天方法</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -134,9 +125,10 @@ Animal.find("Parrot")
 </code></pre>
 
 <h2>Inheritance &amp; Super</h2>
+<h2>继承和超类</h2>
 
 <p>It wouldn't be a proper class implementation without some form of inheritance, and CoffeeScript doesn't disappoint. You can inherit from another class by using the <code>extends</code> keyword. In the example below, <code>Parrot</code> extends from <code>Animal</code>, inheriting all of its instance properties, such as <code>alive()</code></p>
-
+<p>如果没有集成的机制，类的策略也就没有真正的意义，CoffeeScript自然也提供了这方面的语法.你可以使用 <code>extends</code> 关键词从一个类继承自另一个类. 在下面的这个例子中， <code>Parrot</code> 类就继承自 <code>Animal</code>类, 包括了所有的实例方法, 例如 <code>alive()</code> 方法。</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -155,10 +147,13 @@ class Parrot extends Animal
 
 <p>You'll notice that in the example above, we're using the <code>super()</code> keyword. Behind the scenes, this is translated into a function call on the class' parent prototype, invoked in the current context. In this case, it'll be <code>Parrot.__super__.constructor.call(this, "Parrot");</code>. In practice, this will have exactly the same effect as invoking <code>super</code> in Ruby or Python, invoking the overridden inherited function.</p>
 
+<p>从上一个例子中你可以看到，我们还使用了 <code>super()</code> 关键字. 如此做, this就指向了当前类“父类”的原形, 并且使用当前的作用域来执行. 在对应的js中, 就会生成 <code>Parrot.__super__.constructor.call(this, "Parrot");</code>这样的一段申明. 实际运用中, 这样就好比是在 Ruby 或者 Python中使用<code>super</code> , 执行被继承的函数.</p>
 <p>Unless you override the <code>constructor</code>, by default CoffeeScript will invoke the parent's constructor when instances are created.</p>
+<p>通常来说当实例被创建的时候CoffeeScript会执行父类的构造函数，除非你自己修改了构造函数。</p>
 
 <p>CoffeeScript uses prototypal inheritance to automatically inherit all of a class's instance properties. This ensures that classes are dynamic; even if you add properties to a parent class after a child has been created, the property will still be propagated to all of its inherited children.</p>
 
+<p>CoffeeScript使用原形继承来继承一个类的所有实例方法.这保证了所有的类都是动态的; 即便是一个子类被创建后，在父类添加了实例方法，继承于它的子类依然能够使用这个方法.</p>
 <p><span class="csscript"></span></p>
 
 <pre><code>class Animal
@@ -174,9 +169,13 @@ alert("This parrot is no more") if parrot.rip
 
 <p>It's worth pointing out though that static properties are copied to subclasses, rather than inherited using prototype as instance properties are. This is due to implementation details with JavaScript's prototypal architecture, and is a difficult problem to work around.</p>
 
-<h2>Mixins</h2>
+<p>值得指出的是静态的属性都被拷贝到了子类中, 而不是像实例属性那样通过原形来继承. 这主要源于Javascript原形架构的原因。</p>
 
+<h2>Mixins</h2>
+<h2>混合(Mixins)</h2>
 <p><a href="http://en.wikipedia.org/wiki/Mixin">Mixins</a> are not something supported natively by CoffeeScript, for the good reason that they can be trivially implemented yourself. For example, here's two functions, <code>extend()</code> and <code>include()</code> that'll add class and instance properties respectively to a class.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Mixin">Mixins</a> 并非CoffeeScript原生支持的特性, 但基于他们的好处，你可以自己写一个. 举例来说，Mixins包含两个函数, <code>extend()</code>  <code>include()</code> 分别可以向一个类中添加类属性和实例属性.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -196,9 +195,13 @@ include Parrot,
 
 <p>Mixins are a great pattern for sharing common logic between modules when inheritance is not suited. The advantage of mixins, is that you can include multiple ones, compared to inheritance where only one class can be inherited from.</p>
 
-<h2>Extending classes</h2>
+<p>当继承的方式并不适用，但又需要在模块之间共享一些常用的逻辑的时候，Mixin是很好的方式。Mixins的优势在于, 相比于继承的来源只有一个父类，你可以对自己的类加入很多的不同的特性或属性。</p>
 
+<h2>Extending classes</h2>
+<h2>扩展类</h2>
 <p>Mixins are pretty neat, but they're not very object orientated. Instead, let's integrate mixins into CoffeeScript's classes. We're going to define a class called <code>Module</code> that we can inherit from for mixin support. <code>Module</code> will have two static functions, <code>@extend()</code> and <code>@include()</code> which we can use for extending the class with static and instance properties respectively.</p>
+
+<p>Mixin 非常的简洁优雅，但是他们的写法并没有面向对象. 我们就把Mixin整合进CoffeeScript的类之中. 我们先定义一个叫 <code>Module</code> 的类，通过这个类我们可以继承Mixin的特性. <code>Module</code> 拥有两个静态的方法, <code>@extend()</code> 和 <code>@include()</code> 通过这两个方法，我们可以分别扩展一个类的静态和实例属性。</p>
 
 <p><span class="csscript"></span></p>
 
@@ -223,6 +226,8 @@ class Module
 
 <p>The little dance around the <code>moduleKeywords</code> variable is to ensure we have callback support when mixins extend a class. Let's take a look at our <code>Module</code> class in action:</p>
 
+<p>The little dance around the <code>moduleKeywords</code> variable is to ensure we have callback support when mixins extend a class. 让我们看看 <code>Module</code> 类如何实际的使用:</p>
+
 <p><span class="csscript"></span></p>
 
 <pre><code>classProperties = 
@@ -246,6 +251,9 @@ user.save()
 <p>As you can see, we've added some static properties, <code>find()</code> and <code>create()</code> to the <code>User</code> class, as well as some instance properties, <code>save()</code>.
 Since we've got callbacks whenever modules are extended, we can shortcut the process of applying both static and instance properties:</p>
 
+<p>你可以看到, 我们添加了静态方法 <code>find()</code> 和 <code>create()</code> 到 <code>User</code> 这个类, 另外添加了实例方法 <code>save()</code>.
+因为我们有模块扩展的回调, 我们可以通过接受静态和动态的属性来简化这一过程:</p>
+
 <p><span class="csscript"></span></p>
 
 <pre><code>ORM = 
@@ -260,7 +268,7 @@ class User extends Module
 </code></pre>
 
 <p>Super simple and elegant!</p>
-
+<p>非常简单和高效吧！</p>
   </div>
 </div>
 </body>
