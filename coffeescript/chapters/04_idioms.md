@@ -1,12 +1,15 @@
 <div class="back"><a href="index.html">&laquo; Back to all chapters</a></div>
 
-#Common CoffeeScript idioms
+#CoffeeScript常用编程模式
 
 Every language has a set of idioms and practices, and CoffeeScript is no exception. This chapter will explore those conventions, and show you some JavaScript to CoffeeScript comparisons so you can get a practical sense of the language. 
+每一种语言都有自己的惯用语法和编程的模式, CoffeeScript也不例外. 这一章就会涉及这些内容, 并且会对比JavaScript和CoffeeScript之间的区别，以便你能对CoffeeScript有更好的理解.
 
 ##Each
 
 In JavaScript to iterate over every item in an array, we could either use the newly added [`forEach()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/foreach) function, or an old C style `for` loop. If you're planning to use some of JavaScript's latest features introduced in ECMAScript 5, I advise you also include a [shim](https://github.com/kriskowal/es5-shim) in the page to emulate support in older browsers.
+
+在JavaScript中遍历一个数组的每一项, 我们可以使用新增加的 [`forEach()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/foreach) 函数, 或者是用一个 C 风格的 `for` 循环. 如果你计划使用一些最新的JavaScript特性，我建议你在页面中引入 [shim](https://github.com/kriskowal/es5-shim) 来支持旧的浏览器.
     
     for (var i=0; i < array.length; i++)
       myFunction(array[i]);
@@ -17,15 +20,21 @@ In JavaScript to iterate over every item in an array, we could either use the ne
 
 Although the `forEach()` syntax is much more succinct and readable, it suffers from the drawback that the callback function will be invoked every iteration of the array, and is therefore much slower than the equivalent `for` loop. Let's see how it looks in CoffeeScript.
 
+尽管 `forEach()` 在预发上面更加的简介和可读, 但是它也受限于它的通过回调来执行的缺陷, 相比 `for` 循环就要慢许多. 让我们来看看在CoffeeScript里面是怎么样的.
+
 <span class="csscript"></span>
       
     myFunction(item) for item in array
     
 It's a readable and concise syntax, I'm sure you'll agree, and what's great is that it compiles to a `for` loop behind the scenes. In other words CoffeeScript's syntax offers the same expressiveness as `forEach()`, but without the speed and shimming caveats. 
     
+这样的预发更加可读，并且更加简洁， 我想你也会这么认为，并且所有的这一切都是在后台被编译为 `for` 循环. 换句话说 CoffeeScript 的语法提供了 `forEach()` 般的表现力, 并且解决了速度和低浏览器模拟的问题. 
+
 ##Map
 
 As with `forEach()`, ES5 also includes a native map function that has a much more succinct syntax than the classic `for` loop, namely [`map()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/map). Unfortunately it suffers from much the same caveats that `forEach()` does, its speed is greatly reduced due to the function calls.
+
+和 `forEach()` 类似, ES5 同样提供了一个原生的[`map()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/map)函数来代替 `for` 循环 . 不幸的是它的情况和 `forEach()` 类似, 因为调用方式的问题，它的速度也打了折扣.
 
     var result = []
     for (var i=0; i < array.length; i++)
@@ -37,13 +46,15 @@ As with `forEach()`, ES5 also includes a native map function that has a much mor
 
 As we covered in the syntax chapter, CoffeeScript's comprehensions can be used to get the same behavior as `map()`. Notice we're surrounding the comprehension with parens, which is **absolutely critical** in ensuring the comprehension returns what you'd expect, the mapped array. 
 
+我们之前的语法部分介绍了, CoffeeScript的语句同样可以构造出类似 `map()` 的行为. 要注意的是我们在语句外面包了一层括号, 这是用来 **absolutely critical** 确保语句返回的是我们想要的， the mapped array. 
+
 <span class="csscript"></span>
 
     result = (item.name for item in array)
 
 ##Select
 
-Again, ES5 has a utility function [`filter()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/filter) for reducing arrays:
+ES5 有一个功能函数 [`filter()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/filter) 用来筛选数组:
     
     var result = []
     for (var i=0; i < array.length; i++)
@@ -56,6 +67,8 @@ Again, ES5 has a utility function [`filter()`](https://developer.mozilla.org/en/
 
 CoffeeScript's basic syntax uses the `when` keyword to filter items with a comparison. Behind the scenes a `for` loop is generated. The whole execution is performed in an anonymous function to ward against scope leakage and variable conflict. 
 
+CoffeeScript的基础语法则提供了 `when` 通过比较来进行数组条目的筛选. 这同样会生成一个 `for` 循环. 整个执行的过程会在一个匿名函数中进行，以避免作用域泄漏以及变量冲突. 
+
 <span class="csscript"></span>
 
     result = (item for item in array when item.name is "test")
@@ -63,6 +76,8 @@ CoffeeScript's basic syntax uses the `when` keyword to filter items with a compa
 Don't forgot to include the parens, as otherwise `result` will be the last item in the array. 
 CoffeeScript's comprehensions are so flexible that they allow you to do powerful selections as in the following example:
 
+别忘了加上括号, 否则 `result` 的值会是最后一个被筛选出来的条目. 
+CoffeeScript的语法非常的灵活，
 <span class="csscript"></span>
 
     passed = []
