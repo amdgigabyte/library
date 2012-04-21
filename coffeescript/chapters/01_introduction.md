@@ -1,20 +1,20 @@
-<div class="back"><a href="index.html">&laquo; Back to all chapters</a></div>
+<div class="back"><a href="index.html">&laquo; 回到章节列表</a></div>
 
-#What is CoffeeScript?
+#神马是CoffeeScript?
 
-[CoffeeScript](http://coffeescript.org) is a little language that compiles down to JavaScript. The syntax is inspired by Ruby and Python, and implements many features from those two languages. This book is designed to help you learn CoffeeScript, understand best practices and start building awesome client side applications. The book is little, only five chapters, but that's rather apt as CoffeeScript is a little language too. 
+[CoffeeScript](http://coffeescript.org) 是一门可以被编译成JavaScript的小型语言. 它借鉴了Ruby和Python的语法, 并借鉴了它们的一些特性. 本书致力于帮你学习CoffeeScript, 理解他的最佳实践并能够制作优质的客户端程序. 这本书很短小,只有五章, 但这也正好映衬了CoffeeScript这门短小的语言. 
 
-This book is completely open source, and was written by [Alex MacCaw](http://alexmaccaw.co.uk) (or [@maccman](http://twitter.com/maccman)) with great contributions from [David Griffiths](https://github.com/dxgriffiths), [Satoshi Murakami](http://github.com/satyr), and [Jeremy Ashkenas](https://github.com/jashkenas).
+本书是完全开源的, 由 [Alex MacCaw](http://alexmaccaw.co.uk) (or [@maccman](http://twitter.com/maccman)) 编写并得到了 [David Griffiths](https://github.com/dxgriffiths), [Satoshi Murakami](http://github.com/satyr)和 [Jeremy Ashkenas](https://github.com/jashkenas)的支持.
 
-If you have any errata or suggestions, please don't hesitate to open a ticket on the book's [GitHub page](https://github.com/arcturo/library). Readers may also be interested in [JavaScript Web Applications by O'Reilly](http://oreilly.com/catalog/9781449307530/), a book I authored that explores rich JavaScript applications and moving state to the client side. 
+如果你有建议或者发现书写错误, 别犹豫，在本书的[GitHub page](https://github.com/arcturo/library)发起一个issue. 读者们可以也会对[JavaScript Web Applications by O'Reilly](http://oreilly.com/catalog/9781449307530/)这本书比较感兴趣, 这是我写的一本介绍JavaScript富应用和客户端状态管理的书.
 
-So let's dive right into it; why is CoffeeScript better than writing pure JavaScript? Well for a start, there's less code to write - CoffeeScript is very succinct, and takes white-space into account. In my experience this reduces code by a third to a half of the original pure JavaScript. In addition, CoffeeScript has some neat features, such as array comprehensions, prototype aliases and classes that further reduce the amount of typing you need to do. 
+那我们现在就开始吧; 为什么写CoffeeScript会优于写纯JavaScript? 首先, 你可一些更少的代码 - CoffeeScript语法非常的精简明了, 并且把空格也当作了语法的一部分. 从我自己的经验来说，它相比纯JavaScript至少减少了三分之一到一半的代码. 并且, CoffeeScript拥有一些整洁的特性, 例如array comprehensions, prototype aliases 以及 减少了你代码量的类编写. 
 
-More importantly though, JavaScript has a lot of [skeletons in its closet](http://bonsaiden.github.com/JavaScript-Garden/) which can often trip up inexperienced developers. CoffeeScript neatly sidesteps these by only exposing a curated selection of JavaScript features, fixing many of the language's oddities. 
+更重要的是, JavaScript的一些[古怪的特性](http://bonsaiden.github.com/JavaScript-Garden/)经常会困扰一些经验不足的程序员. CoffeeScript巧妙的避开了这些问题，而只暴露JavaScript中发挥真正作用的那部分, 如此解决了这门语言中许多的问题. 
 
-CoffeeScript is *not* a superset of JavaScript, so although you can use external JavaScript libraries from inside CoffeeScript, you'll get syntax errors if you compile JavaScript as-is, without converting it. The compiler converts CoffeeScript code into its counterpart JavaScript, there's no interpretation at runtime. 
+CoffeeScript *不是* JavaScript 的子集, 因此虽然你可以在CoffeeScript中使用外部库而没有做对应的转换, 你在把它编译成JavaScript的时候还是会报错. 编译器会静态的把CoffeeScript的代码翻译成它自己对应的JavaScript副本, 而不是在代码运行期进行转换. 
 
-First to get some common fallacies out the way. You will need to know JavaScript in order to write CoffeeScript, as runtime errors require JavaScript knowledge. However, having said that, runtime errors are usually pretty obvious, and so far I haven't found mapping JavaScript back to CoffeeScript to be an issue. The second problem I've often heard associated with CoffeeScript is speed; i.e. the code produced by the CoffeeScript compiler would run slower than its equivalent written in pure JavaScript. In practice though, it turns out this isn't a problem either. CoffeeScript tends to run as fast, or faster than hand-written JavaScript.
+学习前我们先来看看一些常见的谬误. 在写 CoffeeScript 之前你需要了解 JavaScript, 因为运行期的错误需要你的JavaScript知识. 然而, 话说回来, 运行期的错误是非常明显的, 到目前为止我还没有觉得把JavaScript报错对应到CoffeeScript是一大麻烦事. 我听说过的第二个关于CoffeeScript的问题是运行速度; 举个例子. 通过 CoffeeScript 编译器生成的代码会比使用纯 JavaScript 编写的代码慢. 但是在实践中, 这并不是一个问题. CoffeeScript tends to run as fast, or faster than hand-written JavaScript.
 
 What are the disadvantages of using CoffeeScript? Well, it introduces another compile step between you and your JavaScript. CoffeeScript tries to mitigate the issue as best it can by producing clean and readable JavaScript, and with its server integrations which automate compilation. The other disadvantage, as with any new language, is the fact that the community is still small at this point, and you'll have a hard time finding fellow collaborators who already know the language. CoffeeScript is quickly gaining momentum though, and its IRC list is well staffed; any questions you have are usually answered promptly. 
 
