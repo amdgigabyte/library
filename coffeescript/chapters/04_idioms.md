@@ -1,11 +1,11 @@
-<div class="back"><a href="index.html">&laquo; Back to all chapters</a></div>
+<div class="back"><a href="index.html">&laquo; 返回章节列表</a></div>
 
 #CoffeeScript常用编程模式
 
 Every language has a set of idioms and practices, and CoffeeScript is no exception. This chapter will explore those conventions, and show you some JavaScript to CoffeeScript comparisons so you can get a practical sense of the language. 
 每一种语言都有自己的惯用语法和编程的模式, CoffeeScript也不例外. 这一章就会涉及这些内容, 并且会对比JavaScript和CoffeeScript之间的区别，以便你能对CoffeeScript有更好的理解.
 
-##Each
+##遍历
 
 In JavaScript to iterate over every item in an array, we could either use the newly added [`forEach()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/foreach) function, or an old C style `for` loop. If you're planning to use some of JavaScript's latest features introduced in ECMAScript 5, I advise you also include a [shim](https://github.com/kriskowal/es5-shim) in the page to emulate support in older browsers.
 
@@ -30,7 +30,7 @@ It's a readable and concise syntax, I'm sure you'll agree, and what's great is t
     
 这样的预发更加可读，并且更加简洁， 我想你也会这么认为，并且所有的这一切都是在后台被编译为 `for` 循环. 换句话说 CoffeeScript 的语法提供了 `forEach()` 般的表现力, 并且解决了速度和低浏览器模拟的问题. 
 
-##Map
+##图
 
 As with `forEach()`, ES5 also includes a native map function that has a much more succinct syntax than the classic `for` loop, namely [`map()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/map). Unfortunately it suffers from much the same caveats that `forEach()` does, its speed is greatly reduced due to the function calls.
 
@@ -52,7 +52,7 @@ As we covered in the syntax chapter, CoffeeScript's comprehensions can be used t
 
     result = (item.name for item in array)
 
-##Select
+##筛选
 
 ES5 有一个功能函数 [`filter()`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/filter) 用来筛选数组:
     
