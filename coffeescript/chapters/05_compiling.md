@@ -1,20 +1,22 @@
-#Automating CoffeeScript compilation
+<div class="back"><a href="index.html">&laquo; 返回章节列表</a></div>
 
-An issue with CoffeeScript is that it puts another layer between you and JavaScript, and having to manually compile CoffeeScript files whenever they change quickly gets old. Fortunately CoffeeScript has some alternative forms of compilation which can make the development cycle somewhat smoother.
+#自动编译CoffeeScript
 
-As we covered in the first chapter, we can compile CoffeeScript files using the `coffee` executable:
+CoffeeScript的一个问题在它在你和JavaScript之间又放置入了一层，并且你需要在CoffeeScript文件变化时重新手动编译. 幸运的是,CoffeeScript的有可选的编译方式, 使得你可以在修改和编译之间顺利的进行开发.
+
+我们在第一章已经说过, 我们可以使用`coffee`命令进行CoffeeScript文件的编译:
     
     coffee --compile --output lib src
     
-In fact in the example above, all the `.coffee` files in `src` will be compiled & their JavaScript outputted to the `lib` directory. Even calling that is a bit of a bore, so let's look into automating it.
+事实上, 在上面的例子中, 所有在`src`文件夹中的`.coffee`文件都会被编译成JavaScript并被存放到`lib`目录下面.不过一直的这样运行有一些没效率,那我们就来看看自动化编译吧.
 
 ##Cake
 
-[Cake](http://jashkenas.github.com/coffee-script/#cake) is a super simple build system along the lines of [Make](http://www.gnu.org/software/make/) and [Rake](http://rake.rubyforge.org/). The library is bundled with the `coffee-script` npm package, and available via an executable called `cake`.
+[Cake](http://jashkenas.github.com/coffee-script/#cake)是一个通过[Make](http://www.gnu.org/software/make/)和[Rake](http://rake.rubyforge.org/)实现的非常简单的构建系统. 它是捆绑在`coffeee-script`包上面的一个库，我们可以通过`cake`命令来使用它.
 
-You can define tasks using CoffeeScript in a file called `Cakefile`. Cake will pick these up, and can be invoked by running `cake [task] [options]` from within the directory. To print a list of all the tasks and options, just type `cake`.
+你可以创建	`cakefile`来定义构建的任务.通过`cake [task] [option]`的方式,Cake可以在会在当前目录自动寻找配置,并执行构建任务. 要列出所有的任务和选项, 只需输入`cake`即可.
 
-Tasks are defined using the `task()` function, passing a name, optional description and callback function. For example, create a file called `Cakefile`, and two directories, `lib` and `src`. Add the following to the `Cakefile`:
+我们可以通过`task()`函数来定义任务, 它接受一个名称参数,一个可选描述和一个回调函数.举一个例子, 我们创建一个`Cakefile`和两个目录, `lib`和`src`. 并把下面的这些添加到`Cakefile`中:
 
 <span class="csscript"></span>
 
@@ -35,7 +37,7 @@ Tasks are defined using the `task()` function, passing a name, optional descript
     task 'build', 'Build lib/ from src/', ->
       build()
       
-In the example above, we're defining a task called `build` that can be invoked by running: `cake build`. This runs the same command as the previous example, compiling all the CoffeeScript files in `src` to JavaScript in `lib`. You can now reference JavaScript files in the `lib` directory as per usual from your HTML:
+在上面的例子中,我们定义了一个任务叫`build`,只要通过`cake build`的命令就可以执行了.这个例子的运行效果和之前的例子一样,它会把所有`src`中的CoffeeScript文件都编译成`lib`目录中的JavaScript文件.你可以在HTML文件中引用`lib`目录下面的JavaScript文件.
 
 <span class="csscript"></span>
 
@@ -49,7 +51,7 @@ In the example above, we're defining a task called `build` that can be invoked b
     </body>
     </html>
 
-We're still having to manually run `cake build` whenever our CoffeeScript code changes, which is far from ideal. Luckily, the `coffee` command takes another option, `--watch`, which instructs it to watch a directory for changes and re-compiling as necessary. Let's define another task using that:
+当我们的CoffeeScript代码变化的时候,我们还是要手动调用`cake build`命令,这和理想的情况还有差距.幸运的是, `coffee` 命令支持一个 `--watch`选项, 它会监听目录的变化并会实时的做重编译.让我们再定义另一个任务:
 
 <span class="csscript"></span>
 
@@ -60,7 +62,7 @@ We're still having to manually run `cake build` whenever our CoffeeScript code c
         coffee.stdout.on 'data', (data) ->
           print data.toString()
 
-If one task relies on another, you can run other tasks using `invoke(name)`. Let's add a utility task to our `Cakefile` which is going to both open  `index.html` and start watching the source for changes.
+如果一个任务依赖于另一个任务, 你可以使用`invoke(name)`的方式来运行另一个任务. 让我们在我们的`Cakefile`中添加一条任务,它可以打开`index.html`并开始监听他引用的源文件的变化.
 
 <span class="csscript"></span>
 
@@ -69,7 +71,7 @@ If one task relies on another, you can run other tasks using `invoke(name)`. Let
       spawn 'open', 'index.html'
       invoke 'watch'
 
-You can also define options for your task using the `option()` function, which takes a short name, long name and description.
+你也可以使用`option()`函数来定义任务的选项,一个选项包含一个短名称, 一个长名称和描述.
 
 <span class="csscript"></span>
 
@@ -83,19 +85,18 @@ You can also define options for your task using the `option()` function, which t
       coffee.stdout.on 'data', (data) ->
         print data.toString()
 
-As you can see, the task context now has access to an `options` object containing any data specified by the user. If we run `cake` without any other arguments, all the tasks and options will be listed.
+你可以发现, 任务的上下文获取了一个包含用户数据的`options`对象.如果你直接使用`cake`命令而没有加上其他的参数, 所有的任务和选项都会被列出了.
 
-Cake's a great way of automating common tasks such as compiling CoffeeScript without going to the hassle of using bash or Makefiles. It's also worth taking a look at [Cake's source](http://jashkenas.github.com/coffee-script/documentation/docs/cake.html), a great example of CoffeeScript's expressiveness and beautifully documented alongside the code comments.
+Cake的伟大之处在于它可以编写各种自动化任务,例如自动编译CoffeeScript而不经过bash命令或者Makefile. [Cake的源文件](http://jashkenas.github.com/coffee-script/documentation/docs/cake.html)也很值得一读, 它本身就是包含CoffeeScript的表现力, 并且它的注释也写得很漂亮.
 
-##Server side support
+##服务器端的编译支持
 
-Using Cake for CoffeeScript compilation is fine for static sites, but for dynamic sites we might as well integrate CoffeeScript compilation into the request/response cycle. Various integration solutions already exist for the popular backend languages and frameworks, such as [Rails](http://rubyonrails.org/) and [Django](https://www.djangoproject.com/). 
+使用Cake的方式来编译对于静态站点来说很合适,但是对于动态站点,我们可能就需要把CoffeeScript的编译过程整合在请求\响应的过程中.目前在一些框架中已经出现了一些整合方案,例如[Rails](http://rubyonrails.org/) 和 [Django](https://www.djangoproject.com/). 
 
-When it comes to Rails 3.1, CoffeeScript support comes via [Sprockets & the asset pipeline](https://github.com/sstephenson/sprockets). Add your CoffeeScript files under `app/assets/javascripts`, and Rails is smart enough to pre-compile them when they're requested. JavaScript & CoffeeScript files are concatenated and bundled using special comment directives, meaning you can fetch all of your application's JavaScript with one request. When it comes to production, Rails will write the compiled output to disk, ensuring it's cached and fast to serve. 
+在Rails 3.1中, 可以通过[Sprockets & the asset pipeline](https://github.com/sstephenson/sprockets)来支持CoffeeScript.在`app/assets/javascripts`目录下面存放你的CoffeeScript文件, Rails可以很智能的在文件请求前预处理. JavaScript文件和CoffeeScript文件都通过特殊的注释指令被串联和打包在一起, 这意味着你可以在一次请求中获取所有的的JavaScript文件. 而对于生产代码，Rails会把编译后的文件输出在硬盘中, 保证它可以被缓存并被快速的访问.
 
-Other Ruby options include Rack servers such as 37signal's [Pow](http://pow.cx/) and Joshua Peek's [Nack](http://josh.github.com/nack/), both highly recommended if your application doesn't need Rail's other features and associated overhead.
+如果你的应用不需要其他的 Rails 特性以及相关的功能, 那么对于Ruby来说,像内置了Rack服务的37signal的[Pow](http://pow.cx/)和Joshua Peek的[Nack](http://josh.github.com/nack/)都是很好的选择.
 
-Django also has [support for CoffeeScript](http://pypi.python.org/pypi/django-coffeescript/) through special template tags. It works with both inline code and external files.
+Django通过特殊的模块标签也对CoffeeScript提供了[支持](http://pypi.python.org/pypi/django-coffeescript/),它同时支持行内脚本和外部脚本.
 
-Both Ruby and Python pipe out to Node and the CoffeeScript lib behind the scenes when compiling CoffeeScript, so you'll need to have those installed during development. If you're using Node directly as a backend for your site, CoffeeScript integration is even simpler and you can use it for both the backend and frontend code. We're going to talk more about this in the next chapter, using [Stitch](https://github.com/sstephenson/stitch) to serve all our client-side CoffeeScript.
-
+不管是Ruby还是Python,都会输出到 Node 中,然后通过CoffeeScript库来进行编译,因此在开发时要确保这些都已经安装了. 如果你的网站直接是用Node搭建的, 整合Coffeescript就更简单了,你也可以在前后端同时使用CoffeeScript.我们会在下一章详细介绍这个, 并使用[Stitch](https://github.com/sstephenson/stitch)来提供客户端的CoffeeScript服务.
