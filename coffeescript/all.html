@@ -1057,24 +1057,27 @@ type = do -&gt;
   </header>
   
   <div id="content">
-    <h1>Automating CoffeeScript compilation</h1>
+    <div class="back"><a href="index.html">&laquo; 返回章节列表</a></div>
 
-<p>An issue with CoffeeScript is that it puts another layer between you and JavaScript, and having to manually compile CoffeeScript files whenever they change quickly gets old. Fortunately CoffeeScript has some alternative forms of compilation which can make the development cycle somewhat smoother.</p>
 
-<p>As we covered in the first chapter, we can compile CoffeeScript files using the <code>coffee</code> executable:</p>
+<h1>自动编译CoffeeScript</h1>
+
+<p>CoffeeScript的一个问题在它在你和JavaScript之间又放置入了一层，并且你需要在CoffeeScript文件变化时重新手动编译. 幸运的是,CoffeeScript的有可选的编译方式, 使得你可以在修改和编译之间顺利的进行开发.</p>
+
+<p>我们在第一章已经说过, 我们可以使用<code>coffee</code>命令进行CoffeeScript文件的编译:</p>
 
 <pre><code>coffee --compile --output lib src
 </code></pre>
 
-<p>In fact in the example above, all the <code>.coffee</code> files in <code>src</code> will be compiled &amp; their JavaScript outputted to the <code>lib</code> directory. Even calling that is a bit of a bore, so let's look into automating it.</p>
+<p>事实上, 在上面的例子中, 所有在<code>src</code>文件夹中的<code>.coffee</code>文件都会被编译成JavaScript并被存放到<code>lib</code>目录下面.不过一直的这样运行有一些没效率,那我们就来看看自动化编译吧.</p>
 
 <h2>Cake</h2>
 
-<p><a href="http://jashkenas.github.com/coffee-script/#cake">Cake</a> is a super simple build system along the lines of <a href="http://www.gnu.org/software/make/">Make</a> and <a href="http://rake.rubyforge.org/">Rake</a>. The library is bundled with the <code>coffee-script</code> npm package, and available via an executable called <code>cake</code>.</p>
+<p><a href="http://jashkenas.github.com/coffee-script/#cake">Cake</a>是一个通过<a href="http://www.gnu.org/software/make/">Make</a>和<a href="http://rake.rubyforge.org/">Rake</a>实现的非常简单的构建系统. 它是捆绑在<code>coffeee-script</code>包上面的一个库，我们可以通过<code>cake</code>命令来使用它.</p>
 
-<p>You can define tasks using CoffeeScript in a file called <code>Cakefile</code>. Cake will pick these up, and can be invoked by running <code>cake [task] [options]</code> from within the directory. To print a list of all the tasks and options, just type <code>cake</code>.</p>
+<p>你可以创建 <code>cakefile</code>来定义构建的任务.通过<code>cake [task] [option]</code>的方式,Cake可以在会在当前目录自动寻找配置,并执行构建任务. 要列出所有的任务和选项, 只需输入<code>cake</code>即可.</p>
 
-<p>Tasks are defined using the <code>task()</code> function, passing a name, optional description and callback function. For example, create a file called <code>Cakefile</code>, and two directories, <code>lib</code> and <code>src</code>. Add the following to the <code>Cakefile</code>:</p>
+<p>我们可以通过<code>task()</code>函数来定义任务, 它接受一个名称参数,一个可选描述和一个回调函数.举一个例子, 我们创建一个<code>Cakefile</code>和两个目录, <code>lib</code>和<code>src</code>. 并把下面的这些添加到<code>Cakefile</code>中:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1096,7 +1099,7 @@ task 'build', 'Build lib/ from src/', -&gt;
   build()
 </code></pre>
 
-<p>In the example above, we're defining a task called <code>build</code> that can be invoked by running: <code>cake build</code>. This runs the same command as the previous example, compiling all the CoffeeScript files in <code>src</code> to JavaScript in <code>lib</code>. You can now reference JavaScript files in the <code>lib</code> directory as per usual from your HTML:</p>
+<p>在上面的例子中,我们定义了一个任务叫<code>build</code>,只要通过<code>cake build</code>的命令就可以执行了.这个例子的运行效果和之前的例子一样,它会把所有<code>src</code>中的CoffeeScript文件都编译成<code>lib</code>目录中的JavaScript文件.你可以在HTML文件中引用<code>lib</code>目录下面的JavaScript文件.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1111,7 +1114,7 @@ task 'build', 'Build lib/ from src/', -&gt;
 &lt;/html&gt;
 </code></pre>
 
-<p>We're still having to manually run <code>cake build</code> whenever our CoffeeScript code changes, which is far from ideal. Luckily, the <code>coffee</code> command takes another option, <code>--watch</code>, which instructs it to watch a directory for changes and re-compiling as necessary. Let's define another task using that:</p>
+<p>当我们的CoffeeScript代码变化的时候,我们还是要手动调用<code>cake build</code>命令,这和理想的情况还有差距.幸运的是, <code>coffee</code> 命令支持一个 <code>--watch</code>选项, 它会监听目录的变化并会实时的做重编译.让我们再定义另一个任务:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1123,7 +1126,7 @@ task 'build', 'Build lib/ from src/', -&gt;
       print data.toString()
 </code></pre>
 
-<p>If one task relies on another, you can run other tasks using <code>invoke(name)</code>. Let's add a utility task to our <code>Cakefile</code> which is going to both open  <code>index.html</code> and start watching the source for changes.</p>
+<p>如果一个任务依赖于另一个任务, 你可以使用<code>invoke(name)</code>的方式来运行另一个任务. 让我们在我们的<code>Cakefile</code>中添加一条任务,它可以打开<code>index.html</code>并开始监听他引用的源文件的变化.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1133,7 +1136,7 @@ task 'build', 'Build lib/ from src/', -&gt;
   invoke 'watch'
 </code></pre>
 
-<p>You can also define options for your task using the <code>option()</code> function, which takes a short name, long name and description.</p>
+<p>你也可以使用<code>option()</code>函数来定义任务的选项,一个选项包含一个短名称, 一个长名称和描述.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1148,21 +1151,21 @@ task 'build', 'Build lib/ from src/', -&gt;
     print data.toString()
 </code></pre>
 
-<p>As you can see, the task context now has access to an <code>options</code> object containing any data specified by the user. If we run <code>cake</code> without any other arguments, all the tasks and options will be listed.</p>
+<p>你可以发现, 任务的上下文获取了一个包含用户数据的<code>options</code>对象.如果你直接使用<code>cake</code>命令而没有加上其他的参数, 所有的任务和选项都会被列出了.</p>
 
-<p>Cake's a great way of automating common tasks such as compiling CoffeeScript without going to the hassle of using bash or Makefiles. It's also worth taking a look at <a href="http://jashkenas.github.com/coffee-script/documentation/docs/cake.html">Cake's source</a>, a great example of CoffeeScript's expressiveness and beautifully documented alongside the code comments.</p>
+<p>Cake的伟大之处在于它可以编写各种自动化任务,例如自动编译CoffeeScript而不经过bash命令或者Makefile. <a href="http://jashkenas.github.com/coffee-script/documentation/docs/cake.html">Cake的源文件</a>也很值得一读, 它本身就是包含CoffeeScript的表现力, 并且它的注释也写得很漂亮.</p>
 
-<h2>Server side support</h2>
+<h2>服务器端的编译支持</h2>
 
-<p>Using Cake for CoffeeScript compilation is fine for static sites, but for dynamic sites we might as well integrate CoffeeScript compilation into the request/response cycle. Various integration solutions already exist for the popular backend languages and frameworks, such as <a href="http://rubyonrails.org/">Rails</a> and <a href="https://www.djangoproject.com/">Django</a>.</p>
+<p>使用Cake的方式来编译对于静态站点来说很合适,但是对于动态站点,我们可能就需要把CoffeeScript的编译过程整合在请求\响应的过程中.目前在一些框架中已经出现了一些整合方案,例如<a href="http://rubyonrails.org/">Rails</a> 和 <a href="https://www.djangoproject.com/">Django</a>.</p>
 
-<p>When it comes to Rails 3.1, CoffeeScript support comes via <a href="https://github.com/sstephenson/sprockets">Sprockets &amp; the asset pipeline</a>. Add your CoffeeScript files under <code>app/assets/javascripts</code>, and Rails is smart enough to pre-compile them when they're requested. JavaScript &amp; CoffeeScript files are concatenated and bundled using special comment directives, meaning you can fetch all of your application's JavaScript with one request. When it comes to production, Rails will write the compiled output to disk, ensuring it's cached and fast to serve.</p>
+<p>在Rails 3.1中, 可以通过<a href="https://github.com/sstephenson/sprockets">Sprockets &amp; the asset pipeline</a>来支持CoffeeScript.在<code>app/assets/javascripts</code>目录下面存放你的CoffeeScript文件, Rails可以很智能的在文件请求前预处理. JavaScript文件和CoffeeScript文件都通过特殊的注释指令被串联和打包在一起, 这意味着你可以在一次请求中获取所有的的JavaScript文件. 而对于生产代码，Rails会把编译后的文件输出在硬盘中, 保证它可以被缓存并被快速的访问.</p>
 
-<p>Other Ruby options include Rack servers such as 37signal's <a href="http://pow.cx/">Pow</a> and Joshua Peek's <a href="http://josh.github.com/nack/">Nack</a>, both highly recommended if your application doesn't need Rail's other features and associated overhead.</p>
+<p>如果你的应用不需要其他的 Rails 特性以及相关的功能, 那么对于Ruby来说,像内置了Rack服务的37signal的<a href="http://pow.cx/">Pow</a>和Joshua Peek的<a href="http://josh.github.com/nack/">Nack</a>都是很好的选择.</p>
 
-<p>Django also has <a href="http://pypi.python.org/pypi/django-coffeescript/">support for CoffeeScript</a> through special template tags. It works with both inline code and external files.</p>
+<p>Django通过特殊的模块标签也对CoffeeScript提供了<a href="http://pypi.python.org/pypi/django-coffeescript/">支持</a>,它同时支持行内脚本和外部脚本.</p>
 
-<p>Both Ruby and Python pipe out to Node and the CoffeeScript lib behind the scenes when compiling CoffeeScript, so you'll need to have those installed during development. If you're using Node directly as a backend for your site, CoffeeScript integration is even simpler and you can use it for both the backend and frontend code. We're going to talk more about this in the next chapter, using <a href="https://github.com/sstephenson/stitch">Stitch</a> to serve all our client-side CoffeeScript.</p>
+<p>不管是Ruby还是Python,都会输出到 Node 中,然后通过CoffeeScript库来进行编译,因此在开发时要确保这些都已经安装了. 如果你的网站直接是用Node搭建的, 整合Coffeescript就更简单了,你也可以在前后端同时使用CoffeeScript.我们会在下一章详细介绍这个, 并使用<a href="https://github.com/sstephenson/stitch">Stitch</a>来提供客户端的CoffeeScript服务.</p>
 
   </div>
 </div>
@@ -1189,10 +1192,10 @@ task 'build', 'Build lib/ from src/', -&gt;
   </header>
   
   <div id="content">
-    <div class="back"><a href="index.html">&laquo; Back to all chapters</a></div>
+    <div class="back"><a href="index.html">&laquo; 返回章节列表</a></div>
 
 
-<h1>Creating Applications</h1>
+<h1>创建CoffeeScript应用</h1>
 
 <p>Now you've been given an overview of the syntax, lets explore actually structuring and creating CoffeeScript applications. This section aims to be useful to all CoffeeScript developers, novice or advanced. Indeed, it should be relevant to pure JavaScript developers too.</p>
 
