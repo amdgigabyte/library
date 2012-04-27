@@ -1,32 +1,33 @@
-<div class="back"><a href="index.html">&laquo; Back to all chapters</a></div>
+<div class="back"><a href="index.html">&laquo; 返回章节列表</a></div>
 
-#The Bad Parts
+#糟粕部分
 
-JavaScript is a tricky beast, and knowing the parts that you should avoid is just as important as knowing about the parts you should use. As Sun Tzu says, "know your enemy", and that's exactly what we're going to do in the chapter, exploring the dark side of JavaScript and revealing all the lurking monsters ready to pounce on the unsuspecting developer. 
+JavaScript的特性很奇特, 你在了解你要遵循的部分的同时,还要避免容易产生问题的另一部分. 正如孙子所说:"知己知彼", 我们本章正是要讨论这些, 发现JavaScript的黑暗的那一部分,并揭示这些隐含的问题.从而成为一个让人信任的开发工程师.
 
-As I mentioned in the introduction, CoffeeScript's awesomeness lies not only in it's syntax, but in it's ability to fix some of JavaScript's warts. However, due to the fact that CoffeeScript statements have a direct translation into JavaScript, and don't run in a virtual machine or interpreter, the language is not a silver bullet to all of JavaScript's bugbears and there's still some issues you need to be aware about.
+正如我在介绍中说过的,CoffeeScript的优势不仅仅在于它的语法, 同时它也修复了很多JavaScript的累赘部分.然而,由于CoffeeScript的语句是直接被转换成JavaScript的, 而不是经过虚拟机或者编译器, CoffeeScript并不能作为挽救JavaScript易出bug的一颗银弹, 并且你还是要注意很多问题.
+there's still some issues you need to be aware about.
 
-First, let's talk about what things the language does solve. 
+那么首先, 我们先来看看这门语言解决了哪些问题.
 
-##A JavaScript Subset
+##一个JavaScript的子集
 
-CoffeeScript's syntax only covers a subset of JavaScript's, the famous *Good Parts*, so already there's less to fix. Let's take the `with` statement for example. This statement has for a long time been "considered harmful", and should be avoided. `with` was intended to provide a shorthand for writing recurring property lookups on objects. For example, instead of writing:
+CoffeeScript的语法是覆盖了JavaScript的一个子集, 即*Good Parts*(精粹部分), 因此, 要做修复的部分就少了很多.我们以`with`语句为例. 这个语句长期以来就被认为是"有害的",而避免使用. 而实际`with`的初衷是在查找对象的属性是提供一个捷径. 举例来说, 原始的代码如下:
 
     dataObj.users.alex.email = "info@eribium.org";
-    
-You could write:
+
+使用`with`,就是这样:    
 
     with(dataObj.users.alex) {
       email = "info@eribium.org";
     }
-    
-Setting aside the fact that we shouldn't have such a deep object in the first place, the syntax is quite clean. Except for one thing. It's damn confusing to the JavaScript interpreter - it doesn't know exactly what you're going to do in the `with` context, and forces the specified object to be searched first for all name lookups. 
 
-This really hurts performance and means the interpreter has to turn off all sorts of JIT optimizations. Additionally `with` statements can't be minified using tools like [uglify-js](https://github.com/mishoo/UglifyJS). They're also deprecated and removed from future JavaScript versions. All things considered, it's much better just to avoid using them, and CoffeeScript takes this a step further by eliminating them from it's syntax. In other words, using `with` in CoffeeScript will throw a syntax error. 
+先抛开我们不该创建一个层级如此之深的对象不说, 这个语法本身是相当简单清晰的. 除了一个问题 - `with`的使用对于JavaScript翻译器来说是困惑的. 他并不确定你在`with`的上下文中会做什么, 并且会强制这个特殊的对象在所有的名称查找中首先被查找.
 
-##Global variables
+这非常的影响性能,并且意味着解释器会关闭所有的JIT优化项目. 并且`with`语句不能被类似[uglify-js](https://github.com/mishoo/UglifyJS)的工具压缩. 这样一来, 他们也就在将来的JavaScript版本中被废弃了. 考虑所有的一切,避免使用 `with` 会更好一些, 而在CoffeeScript中, 从语法上面更进一步地防止了对这些的使用. 换句话说, 在CoffeeScript中使用`with`语句会抛错误.
 
-By default, your JavaScript programs run in a global scope, and by default any variables created are in that global scope. If you want to create a variable in the local scope, JavaScript requires explicitly indicating that fact using the `var` keyword. 
+##全局变量
+
+通常来说,JavaScript程序都是运行在全局作用域中的, 并且默认情况下, 任何的变量都是创建在全局作用域中的. 如果你要创建一个本地作用域的变量, JavaScript需要你显式的使用`var`关键字声明变量.
 
     usersCount = 1;        // Global
     var groupsCount = 2;   // Global
@@ -36,11 +37,11 @@ By default, your JavaScript programs run in a global scope, and by default any v
       var postsCount = 4;  // Local
     })()
 
-This is a bit of an odd decision since the vast majority of the time you'll be creating local variables not global, so why not make that the default? As it stands, developers have to remember to put `var` statements before any variables they're initializing, or face weird bugs when variables accidentally conflict and overwrite each other.
+这似乎很没有必要这样, 因为大多数时候的你都是在创建本地变量而非全局变量, 因此, 为什么不让创建本地变量是默认的? 因为JavaScript的语法本身, 开发者们都要在变量初始化时在声明语句之前加上`var`, 否则就有可能产生变量冲突或者变量覆盖等奇怪的问题.
 
-Luckily CoffeeScript comes to your rescue here by eliminating implicit global variable assignment entirely. In other words, the `var` keyword is reserved in CoffeeScript, and will trigger a syntax error if used. Local variables are created implicitly by default, and it's very difficult to create global variables without explicitly assigning them as properties on `window`.
+幸运的是,CoffeeScript完全消除全局变量的声明来避免各种问题. 换句话说, `var`关键词是CoffeeScript的保留字, 如果使用的话就会引发语法错误.本地变量是被默认创建的, 如果不显式的把变量作为`window`的属性, 要创建全局变量是非常困难的.
 
-Let's have a look at an example of CoffeeScript's variable assignment:
+让我们来看一个CoffeeScript变量赋值的例子:
 
 <span class="csscript"></span>
 
@@ -48,7 +49,7 @@ Let's have a look at an example of CoffeeScript's variable assignment:
     do ->
       innerScope = true
       
-Compiles down to:
+会被编译成:
 
     var outerScope;
     outerScope = true;
@@ -57,7 +58,7 @@ Compiles down to:
       return innerScope = true;
     })();
     
-Notice how CoffeeScript initializes variables (using `var`) automatically in the context their first used. Whilst it's impossible to shadow outer variables, you can still refer to and access them. You need to watch out for this, be careful that you're not reusing the name of an external variable accidentally if you're writing a deeply nested function or class. For example, here we're accidentally overwriting the `package` variable in a Class function:
+注意CoffeeScript如何在他们被使用的上下文中自动(使用 `var`)初始化变量. 虽然要覆盖外部变量成为了不可能, 但你依然可以引用并获取它们. 你要注意的是, 如果你是在写一个深层嵌套的函数或类的时候, 你不能重用外部变量的名字. 举例来说, 这里我们在类函数中意外重写了`package`变量:
 
 <span class="csscript"></span>
 
@@ -71,17 +72,18 @@ Notice how CoffeeScript initializes variables (using `var`) automatically in the
       hemPackage: ->
         package.create()
         
-Global variables are needed from time to time, and to create those you need to set them as properties on `window`:
+全局变量总会有需要使用的时候, 这时候你需要把这些变量设置为 `window` 的属性:
 
 <span class="csscript"></span>
 
       class window.Asset
         constructor: ->
 
-By ensuring global variables are explicit, rather than implicit, CoffeeScript removes one of the major sources of bugs in JavaScript programs.
+在全局变量的声明确定为显式的, 而不是隐式的之后, CoffeeScript排除了JavaScript程序中主要的一个bug来源.
 
-##Semicolons
+##分号
 
+JavaScript在源码中没有强制要求使用分号, 因此使用时你可以省略他们. 但是, JavaScript编译器还是需要分号的, 解析器在遇到由于缺少分号而解析错误时,就会自动的填入分号. 换句话说, 
 JavaScript does not enforce the use of semicolons in source code, so it's possible to omit them. However, behind the scenes the JavaScript compiler still needs them, so the parser automatically inserts them whenever it encounters a parse error due to a missing semicolon. In other words, it'll try to evaluate a statement without semicolons and, if that fails, tries again using semicolons.
 
 Unfortunately this is a tremendously bad idea, and can actually change the behavior of your code. Take the following example, seems valid JavaScript, right?
