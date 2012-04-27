@@ -1197,48 +1197,52 @@ task 'build', 'Build lib/ from src/', -&gt;
 
 <h1>创建CoffeeScript应用</h1>
 
-<p>Now you've been given an overview of the syntax, lets explore actually structuring and creating CoffeeScript applications. This section aims to be useful to all CoffeeScript developers, novice or advanced. Indeed, it should be relevant to pure JavaScript developers too.</p>
+<p>现在的你应该对语法已经有大致的了解了, 我们就来实际的构建和创建CoffeeScript应用. 希望对本章的阅读会对所有CoffeeScript开发者有帮助,不论是初学者还是高手,事实上,它与纯JavaScript开发者是息息相关的.
+Now you've been given an overview of the syntax, lets explore actually structuring and creating CoffeeScript applications. This section aims to be useful to all CoffeeScript developers, novice or advanced. Indeed, it should be relevant to pure JavaScript developers too.</p>
 
-<p>For some reason, when developers are building client side JavaScript applications, tried and tested patterns and conventions often fly out the window, and the end result is a spaghetti mess of un-maintainable coupled JavaScript. I can't stress enough how important application architecture is; if you're writing any JavaScript/CoffeeScript beyond simple form validation you should implement a form of application structure, such as <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>.</p>
+<p>由于一些原因, 很多人在编写客户端JavaScript应用的时候, 还是会忘记一些惯例和常用模式, 从而导致了意大利面条式耦合的不易维护的JavaScript.在这里我不想重申一个应用的架构是多么重要; 如果你使用CoffeeScript或者JavaScript不仅仅是编写简单的表单验证, 你应当使用一些例如<a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>的开发模式.</p>
 
-<p>The secret to building maintainable large applications is not to build large applications. In other words, build a series of modular de-coupled components. Keep application logic as generic as possible, abstracting it out as appropriate. Lastly separate out your logic into views, models and controllers (MVC). Implementing MVC is beyond the scope of this chapter, for that I recommend you check out my book on <a href="http://oreilly.com/catalog/9781449307530/">JavaScript Web Applications</a> and use a framework like <a href="http://documentcloud.github.com/backbone/">Backbone</a> or <a href="https://github.com/maccman/spine">Spine</a>. Rather than that, here we're going to cover structuring applications using CommonJS modules.</p>
+<p>构建可维护的大型应用程序并不仅仅意味着构建大的应用. 换句话说, 你需要构建一系列的相互不耦合的组件. 尽可能的保证应用逻辑的通用, 并进行适当的抽象. 最后,把你的逻辑分到view,model，controller(MVC)三层当中. 本章讲不会涉及MVC, 如果你要了解这方面的知识, 我建议你阅读我的另一本书<a href="http://oreilly.com/catalog/9781449307530/">JavaScript Web Applications</a> 并使用<a href="http://documentcloud.github.com/backbone/">Backbone</a> or <a href="https://github.com/maccman/spine">Spine</a>这样的框架. 在这里的话, 我们则会介绍使用CommonJS模块来构建应用.</p>
 
-<h2>Structure &amp; CommonJS</h2>
+<h2>架构 和 CommonJS</h2>
 
-<p>So what exactly are CommonJS modules? Well, If you've used <a href="http://nodejs.org/">NodeJS</a> before you've used CommonJS modules, probably without realizing it. CommonJS modules were initially developed for writing server side JavaScript libraries, in an attempt to deal with loading, namespacing and scoping issues. They were a common format that would be compatible across all JavaScript implementations. The aim was that a library written for <a href="http://www.mozilla.org/rhino/">Rhino</a> would work for Node. Eventually these ideas transitioned back to browsers, and now we have great libraries like <a href="http://requirejs.org">RequireJS</a> and <a href="https://github.com/jbrantly/yabble">Yabble</a> to use modules client-side.</p>
+<p>那么到底什么是CommonJS模块呢?如果你在之前使用过<a href="http://nodejs.org/">NodeJS</a>, 你可能没有意识到你已经在使用CommonJS了.CommonJS规范最初是用在服务器端的JavaScript库上面, 主要解决的是加载,命名空间,作用域等问题. CommonJS旨在在所用的JavaScript实现里都使用通用的形式. CommonJS旨在使工作于<a href="http://www.mozilla.org/rhino/">Rhino</a>的库也可以在Node下面运行. 最终,这些想法都被带到了浏览器中,因而就有了我们现在知道的<a href="http://requirejs.org">RequireJS</a> 和 <a href="https://github.com/jbrantly/yabble">Yabble</a> 这样的库让我们在客户端使用模块.</p>
 
-<p>Practically speaking, modules ensure that your code is run in a local namespace (code encapsulation), that you can load other modules with the <code>require()</code> function, and expose module properties via <code>module.exports</code>. Let's dive into that in a bit more depth now.</p>
+<p>老实说, 模块可以确保你的代码在一个本地命名空间下运行(代码封装), 你可以通过<code>require()</code>函数来加载别的模块,也可以使用<code>module.exports</code>来输出模块.接下来我们在深入一些.</p>
 
-<h3>Requiring files</h3>
+<h3>文件依赖载入</h3>
 
-<p>You can load in other modules and libraries using <code>require()</code>. Simply pass a module name and, if it's in the load path, it'll return an object representing that module. For example:</p>
+<p>你可以使用<code>require()</code>来加载别的模块和库. 只需传一个模块名, 如果此模块名的文件存在于加载的路径下, 那么将会返回一个代表此模块的对象,比如说:</p>
 
 <pre><code>User = require("models/user")
 </code></pre>
 
-<p>Synchronous require support is a contentious issue, but has mostly been resolved with the mainstream loader libraries and latest CommonJS <a href="http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">proposals</a>. It may be something you'll have to look into if you decided to take a separate route than the one I'm advocating with Stitch below.</p>
+<p>对同步载入的支持一直是一个问题, 好在这个问题基本上被最新的CommonJS<a href="http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">提案</a>和主流的loader库解决了. 如果你要摒弃我下面会提到的Stitch而采用别的方式,那你可能必须考虑一下别的处理同步载入的方式.
+Synchronous require support is a contentious issue, but has mostly been resolved with the mainstream loader libraries and latest CommonJS <a href="http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">proposals</a>. It may be something you'll have to look into if you decided to take a separate route than the one I'm advocating with Stitch below.</p>
 
-<h3>Exporting properties</h3>
+<h3>属性的输出</h3>
 
-<p>By default, modules don't expose any properties so their contents are completely invisible to <code>require()</code> calls. If you want a particular property to be accessible from your module, you'll need to set it on <code>module.exports</code>:</p>
+<p>默认情况下, 模块不会输出任何的属性,因此它们对于<code>require()</code>的调用是完全不可见的.如果你希望你的模块有部分属性暴露给外部调用,你就要通过<code>module.exports</code>来设定.</p>
 
 <pre><code># random_module.js
 module.exports.myFineProperty = -&gt;
   # Some shizzle
 </code></pre>
 
-<p>Now, whenever this module is required then <code>myFineProperty</code> will be exposed:</p>
+<p>这样,当这个模块被载入时,<code>myFineProperty</code>就会暴露出来.
+Now, whenever this module is required then <code>myFineProperty</code> will be exposed:</p>
 
 <pre><code>myFineProperty = require("random_module").myFineProperty
 </code></pre>
 
-<h2>Stitch it up</h2>
+<h2>使用Stitch</h2>
 
-<p>Formatting your code as CommonJS modules is all fine and dandy, but how do you actually get this working on the client in practice? Well, my method of choice is the rather unheard of <a href="https://github.com/sstephenson/stitch">Stitch</a> library. Stitch is by Sam Stephenson, the mind behind <a href="http://www.prototypejs.org">Prototype.js</a> amongst other things, and solves the module problem so elegantly it makes me want to dance for joy! Rather than try and dynamically resolve dependencies, Stitch simply bundles up all your JavaScript files into one, wrapping them in some CommonJS magic. Oh, and did I mention it'll compile your CoffeeScript, JS templates, <a href="http://lesscss.org">LESS CSS</a> and <a href="http://sass-lang.com">Sass</a> files too!</p>
+<p>把你的代码使用CommonJS的模块来组织固然好, 但是我们如何在客户端来做呢?我选择的是一个闻所未闻的<a href="https://github.com/sstephenson/stitch">Stitch</a> 库.Stitch是Sam Stephenson写的, 它的基于<a href="http://www.prototypejs.org">Prototype.js</a>并解决了模块的问题,这是我用它的最大动机.
+与其他通过动态加载模块的库不同的是,Stitch 简单的把所有的JavaScript捆绑为同一个,并用CommonJS进行封装. 哦, 对了, 它还会编译你的CoffeeScript, JS模板, <a href="http://lesscss.org">LESS CSS</a> 和 <a href="http://sass-lang.com">Sass</a> 文件!</p>
 
-<p>First things first, you'll need to install <a href="http://nodejs.org/">Node.js</a> and <a href="http://npmjs.org/">npm</a> if you haven't already, we'll be using those throughout this chapter.</p>
+<p>首先如果你没有安装<a href="http://nodejs.org/">Node.js</a> 和 <a href="http://npmjs.org/">npm</a>你要先进行安装. 它们会在本章的例子中一直被用到.</p>
 
-<p>Now let's create our application structure. If you're using <a href="https://github.com/maccman/spine">Spine</a>, you can automate this with <a href="http://github.com/maccman/spine.app">Spine.App</a>, otherwise it's something you'll need to do manually. I usually have an <code>app</code> folder for all the application specific code, and a <code>lib</code> folder for general libraries. Then anything else, including static assets, goes in the <code>public</code> directory.</p>
+<p>现在, 我们来规划一下整个应用架构. 如果你使用<a href="https://github.com/maccman/spine">Spine</a>, 你可以用<a href="http://github.com/maccman/spine.app">Spine.App</a>来自动化创建, 否则你就要手动来创建. 我通常会在<code>app</code>目录来存放所有的应用代码, 在<code>lib</code>中存放通用的库文件.其他的东西, 包括静态资源, 都放在<code>public</code>目录中.</p>
 
 <pre><code>app
 app/controllers
@@ -1250,7 +1254,7 @@ public
 public/index.html
 </code></pre>
 
-<p>Now to actually boot up the Stitch server. Let's create a file called <code>index.coffee</code> and fill it with the following script:</p>
+<p>现在我们开启Stitch服务器. 我们来先来创建一个 <code>index.coffee</code> 文件,并加入如下的代码:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1281,7 +1285,7 @@ console.log "Starting server on port: #{port}"
 app.listen port
 </code></pre>
 
-<p>You can see some dependencies listed: <code>coffee-script</code>, <code>stitch</code> and <code>express</code>. We need to create a <code>package.json</code> file, listing these dependencies so npm can pick them up. Our <code>./package.json</code> file will look like this:</p>
+<p>我们的依赖有<code>coffee-script</code>, <code>stitch</code> and <code>express</code>. 我们需要创建一个<code>package.json</code>文件, 来罗列这些依赖,这样npm可以来载入这些依赖.我们的<code>./package.json</code>文件具体内容如下:</p>
 
 <pre><code>{
   "name": "app",
@@ -1295,18 +1299,18 @@ app.listen port
 }
 </code></pre>
 
-<p>And let's install those dependencies with npm:</p>
+<p>让我们通过npm来安装那些依赖:</p>
 
 <pre><code>npm install .
 npm install -g coffee-script
 </code></pre>
 
-<p>Rightio, we're almost there. Now run:</p>
+<p>好的,搞定了coffee-script之后,现在执行:</p>
 
 <pre><code>coffee index.coffee
 </code></pre>
 
-<p>You'll hopefully have a Stitch server up and running. Let's go ahead and test it out by putting an <code>app.coffee</code> script in the <code>app</code> folder. This will be the file that'll bootstrap our application.</p>
+<p>这样你的Stitch服务器就运行起来了.我们继续并在<code>app</code>目录下面放一个<code>app.coffee</code>脚本来进行一下测试. 我们用这个文件来做整个应用的引导文件.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1315,7 +1319,7 @@ npm install -g coffee-script
     # Bootstrap the app
 </code></pre>
 
-<p>Now let's create our main page <code>index.html</code> which, if we're building a single page app, will be the only page the user actually navigates to. This is a static asset, so it's located under the <code>public</code> directory.</p>
+<p>现在创建我们的主页<code>index.html</code>, 如果你是在创建一个单页面的应用程序,那么这将是用户访问唯一的页面. 这是一个静态资源, 因此我们把它放在<code>public</code>目录下面.</p>
 
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -1336,7 +1340,7 @@ npm install -g coffee-script
 &lt;/html&gt;
 </code></pre>
 
-<p>When the page loads, our <em>DOMContentLoaded</em> event callback is requiring the <code>app.coffee</code> script (which is automatically compiled), and invoking our <code>init()</code> function. That's all there is to it, we've got CommonJS modules up and running, as well as a HTTP server and CoffeeScript compiler. If, say, we wanted to include a module, it's just a case of calling <code>require()</code>. Let's create a new class, <code>User</code>, and reference it from <code>app.coffee</code>:</p>
+<p>当页面载入之后, 我们的 <em>DOMContentLoaded</em> 事件回调中会加载<code>app.coffee</code>脚本(它已经被自动编译) 并执行<code>init()</code>函数. 这就是所有的,我们已经有了CommonJS模块并运行起来,这也包括HTTP服务器和CoffeeScript编译器. 现在假设, 我们想引入一个模块, 只需要调用一下<code>require()</code>. 让我们来创建一个新的类 - <code>User</code>, 并在<code>app.coffee</code>里面来引用它:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1348,13 +1352,13 @@ module.exports = class User
 User = require("models/user")
 </code></pre>
 
-<h2>JavaScript templates</h2>
+<h2>JavaScript模板</h2>
 
-<p>If you're moving logic to the client side, then you'll definitely need some sort of templating library. JavaScript templating is very similar to templates on the server, such as Ruby's ERB or Python's text interpolation, expect of course it runs client side. There are a whole host of templating libraries out there, so I encourage you to do some research and check them out. By default, Stitch comes with support for <a href="https://github.com/sstephenson/eco">Eco</a> templates baked right in.</p>
+<p>如果你在客户端编写逻辑, 那么你很可能需要一套模板库.JavaScript的模板与服务器端的模板非常类似, 比如Ruby的ERB和Python的文本插值. 目前已经有很多的模板库了, 我建议你使用时做一番对比和调查.默认情况下,Stitch支持<a href="https://github.com/sstephenson/eco">Eco</a>模板.</p>
 
-<p>JavaScript templates are very similar to server side ones. You have template tags interoperated with HTML, and during rendering those tags get evaluated and replaced. The great thing about <a href="https://github.com/sstephenson/eco">Eco</a> templates, is they're actually written in CoffeeScript.</p>
+<p>JavaScript的模板与服务器端的模板非常类似. 你会在里面使用还有HTML的插值标签, 在渲染时, 这些标签都会被赋值和替换. <a href="https://github.com/sstephenson/eco">Eco</a> 模板的给力之处在于他们是由CoffeeScript写的.</p>
 
-<p>Here's an example:</p>
+<p>这里有一个例子:</p>
 
 <pre><code>&lt;% if @projects.length: %&gt;
   &lt;% for project in @projects: %&gt;
@@ -1366,48 +1370,48 @@ User = require("models/user")
 &lt;% end %&gt;
 </code></pre>
 
-<p>As you can see, the syntax is remarkably straightforward. Just use <code>&lt;%</code> tags for evaluating expressions, and <code>&lt;%=</code> tags for printing them. A partial list of template tags is as follows:</p>
+<p>你可以看到, 它的语法非常简单. 只要用<code>&lt;%</code>标签来包裹表达式, 使用<code>&lt;%=</code>标签来打印表达式结果.模板标签的部分使用规则如下:</p>
 
 <ul>
 <li><p><code>&lt;% expression %&gt;</code><br/>
-Evaluate a CoffeeScript expression without printing its return value.</p></li>
+执行一个CoffeeScript表达式而不输出任何内容.</p></li>
 <li><p><code>&lt;%= expression %&gt;</code><br/>
-Evaluate a CoffeeScript expression, escape its return value, and print it.</p></li>
+执行一个CoffeeScript表达式, 并且对返回值进行转义和输出.</p></li>
 <li><p><code>&lt;%- expression %&gt;</code><br/>
-Evaluate a CoffeeScript expression and print its return value without escaping it.</p></li>
+执行一个CoffeeScript表达式, 对返回值不转义即输出.</p></li>
 </ul>
 
 
-<p>You can use any CoffeeScript expression inside the templating tags, but there's one thing to look out for. CoffeeScript is whitespace-sensitive, but your Eco templates aren't. Therefore, Eco template tags that begin an indented CoffeeScript block must be suffixed with a colon. To indicate the end of an indented block, use the special tag <code>&lt;% end %&gt;</code>. For example:</p>
+<p>你可以在模板的标签中加入任意的CoffeeScript表达式, 但是有一个要注意的. CoffeeScript对于空格是敏感的, 但是Eco模板系统不会. 因此使用Eco模版标签包裹代码块时,要在起始标签中最后以冒号结尾, 在结束标签中显式的使用<code>&lt;% end %&gt;</code>,例如:</p>
 
 <pre><code>&lt;% if @project.isOnHold(): %&gt;
   On Hold
 &lt;% end %&gt;
 </code></pre>
 
-<p>You don't need to write the <code>if</code> and <code>end</code> tags on separate lines:</p>
+<p>其实也你用把<code>if</code> 和 <code>end</code>标签分行写:</p>
 
 <pre><code>&lt;% if @project.isOnHold(): %&gt; On Hold &lt;% end %&gt;
 </code></pre>
 
-<p>And you can use the single-line postfix form of <code>if</code> as you'd expect:</p>
+<p>甚至你可以使用单行的方式输出这条<code>if</code>语句:</p>
 
 <pre><code>&lt;%= "On Hold" if @project.isOnHold() %&gt;
 </code></pre>
 
-<p>Now we've got a handle on the syntax, let's define an Eco template in <code>views/users/show.eco</code>:</p>
+<p>现在我们基本掌握了语法, 我们就在<code>views/users/show.eco</code>文件中定义一个Eco模板:</p>
 
 <pre><code>&lt;label&gt;Name: &lt;%= @name %&gt;&lt;/label&gt;
 </code></pre>
 
-<p>Stitch will automatically compile our template and include it in <code>application.js</code>. Then, in our application's controllers we can require the template, like it was a module, and execute it passing any data required.</p>
+<p>Stitch会自动编译我们的模板,并在<code>application.js</code>中包含它. 然后, 在我们的应用controller中,我们就可以载入这个模板, 这就好比一个模块, 我们传入了参数并执行它.</p>
 
 <p><span class="csscript"></span></p>
 
 <pre><code>require("views/users/show")(new User("Brian"))
 </code></pre>
 
-<p>Our <code>app.coffee</code> file should now look like this, rendering the template and appending it to the page when the document loads:</p>
+<p>我们的<code>app.coffee</code>文件现在应该差不多是这样, 渲染模板并在文档加载时,把模板输出到页面中:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -1426,42 +1430,43 @@ App =
 module.exports = App
 </code></pre>
 
-<p>Open up <a href="http://localhost:9294/">the application</a> and give it a whirl! Hopefully this tutorial has given you a good idea of how to structure client-side CoffeeScript applications. For your next steps, I recommend checking out a client-side framework like <a href="http://documentcloud.github.com/backbone/">Backbone</a> or <a href="http://spinejs.com">Spine</a>, They'll provide a basic MVC structure for you, freeing you up for the interesting stuff.</p>
+<p>打开<a href="http://localhost:9294/">应用</a>看看！希望这个教程能够帮你了解如何使用CoffeeScript来构建客户端应用.至于后面的使用, 我建议你检出<a href="http://documentcloud.github.com/backbone/">Backbone</a> 或者 <a href="http://spinejs.com">Spine</a>这样的客户端框架, 他们会给你提供基础的MVC架构,让你的工作更充满乐趣.</p>
 
-<h2>Bonus - 30 second deployment with Heroku</h2>
+<h2>附 - 30秒学会使用Heroku开发</h2>
 
-<p><a href="http://heroku.com/">Heroku</a> is an incredibly awesome web host that manages all the servers and scaling for you, letting you get on with the exciting stuff (building awesome JavaScript applications). You'll need an account with Heroku for this tutorial to work, but the great news is that their basic plan is completely free. While traditionally a Ruby host, Heroku have recently released their Cedar stack, which includes Node support.</p>
+<p><a href="http://heroku.com/">Heroku</a> 是一个非常棒的在线程序托管服务, 它可以提供所有的服务器管理和规模化应用托管服务, 让你能够部署各种各样的JavaScript 应用.在开始这个教程前,你要先注册一个Heroku的账户, 好消息是, Heroku的基础服务是完全免费的. 作为一个传统的Ruby的托管服务, Heroku 最近也提供了Node的支持.
+<a href="http://heroku.com/">Heroku</a> is an incredibly awesome web host that manages all the servers and scaling for you, letting you get on with the exciting stuff (building awesome JavaScript applications). You'll need an account with Heroku for this tutorial to work, but the great news is that their basic plan is completely free. While traditionally a Ruby host, Heroku have recently released their Cedar stack, which includes Node support.</p>
 
-<p>Firstly we need to make a <code>Procfile</code>, which will inform Heroku about our application.</p>
+<p>首先我们要创建一个<code>Procfile</code>, 用它来把我们应用的信息告知Heroku.</p>
 
 <pre><code>echo "web: coffee index.coffee" &gt; Procfile
 </code></pre>
 
-<p>Now, if you haven't already, you'll need to create a local git repository for your application.</p>
+<p>然后如果你应用还没有本地git仓库的话, 我们来创建一个.</p>
 
 <pre><code>git init
 git add .
 git commit -m "First commit"    
 </code></pre>
 
-<p>And now to deploy the application, we'll use the <code>heroku</code> gem (which you'll need to install if you haven't already).</p>
+<p>现在就可以通过<code>heroku</code>gem包(如果没有的话你需要提前安装)来托管应用了.</p>
 
 <pre><code>heroku create myAppName --stack cedar
 git push heroku master
 heroku open
 </code></pre>
 
-<p>That's it! Seriously, that's all there is to it. Hosting Node applications has never been easier.</p>
+<p>好了, 准确的说这就是你要做的所有事情, 托管Node应用没有比这更简单的了.</p>
 
-<h2>Additional libraries</h2>
+<h2>其他库</h2>
 
-<p><a href="https://github.com/sstephenson/stitch">Stitch</a> and <a href="https://github.com/sstephenson/eco">Eco</a> aren't the only libraries you can use for creating CoffeeScript &amp; Node applications, there are a variety of alternatives.</p>
+<p><a href="https://github.com/sstephenson/stitch">Stitch</a> 和 <a href="https://github.com/sstephenson/eco">Eco</a>并非你构建CoffeeScript和Node应用的唯一选择.</p>
 
-<p>For example, when it comes to templating, you can use <a href="http://mustache.github.com">Mustache</a>, <a href="http://jade-lang.com">Jade</a> or write your HTML in pure CoffeeScript using <a href="http://coffeekup.org">CoffeeKup</a>.</p>
+<p>举个例子, 模板你还可以使用<a href="http://mustache.github.com">Mustache</a>, <a href="http://jade-lang.com">Jade</a>,或者使用纯CoffeeScript的方式的<a href="http://coffeekup.org">CoffeeKup</a>编写你的HTML</p>
 
-<p>As for serving up application, <a href="http://github.com/maccman/hem">Hem</a> is a great choice, supporting both CommonJS and NPM modules and integrating seamlessly with the CoffeeScript MVC framework <a href="http://spinejs.com">Spine</a>. <a href="https://github.com/substack/node-browserify">node-browsify</a> is another similar project. Or if you want to go lower level with <a href="http://expressjs.com/">express</a> integration, there's Trevor Burnham's <a href="https://github.com/TrevorBurnham/connect-assets">connect-assets</a></p>
+<p>而对于应用服务, <a href="http://github.com/maccman/hem">Hem</a>是一个很好的选择, 它支持CommonJS和NPM模块,并无缝整合了CoffeeScript的MVC框架<a href="http://spinejs.com">Spine</a>. <a href="https://github.com/substack/node-browserify">node-browsify</a>是另一个类似的项目.或者你想整合<a href="http://expressjs.com/">express</a>, 你可以选择Trevor Burnham的 <a href="https://github.com/TrevorBurnham/connect-assets">connect-assets</a></p>
 
-<p>You can find a full list of CoffeeScript web framework plugins, on the <a href="https://github.com/jashkenas/coffee-script/wiki/Web-framework-plugins">project's wiki</a>.</p>
+<p>在CoffeeScript的<a href="https://github.com/jashkenas/coffee-script/wiki/Web-framework-plugins">项目 wiki</a>上面, 你可以找到一个CoffeeScriptweb框架插件的完整列表.</p>
 
   </div>
 </div>
