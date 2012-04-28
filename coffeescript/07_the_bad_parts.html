@@ -20,38 +20,39 @@
   </header>
   
   <div id="content">
-    <div class="back"><a href="index.html">&laquo; Back to all chapters</a></div>
+    <div class="back"><a href="index.html">&laquo; 返回章节列表</a></div>
 
 
-<h1>The Bad Parts</h1>
+<h1>糟粕部分</h1>
 
-<p>JavaScript is a tricky beast, and knowing the parts that you should avoid is just as important as knowing about the parts you should use. As Sun Tzu says, "know your enemy", and that's exactly what we're going to do in the chapter, exploring the dark side of JavaScript and revealing all the lurking monsters ready to pounce on the unsuspecting developer.</p>
+<p>JavaScript的特性很奇特, 你在了解你要遵循的部分的同时,还要避免容易产生问题的另一部分. 正如孙子所说:"知己知彼", 我们本章正是要讨论这些, 发现JavaScript的黑暗的那一部分,并揭示这些隐含的问题.从而成为一个让人信任的开发工程师.</p>
 
-<p>As I mentioned in the introduction, CoffeeScript's awesomeness lies not only in it's syntax, but in it's ability to fix some of JavaScript's warts. However, due to the fact that CoffeeScript statements have a direct translation into JavaScript, and don't run in a virtual machine or interpreter, the language is not a silver bullet to all of JavaScript's bugbears and there's still some issues you need to be aware about.</p>
+<p>正如我在介绍中说过的,CoffeeScript的优势不仅仅在于它的语法, 同时它也修复了很多JavaScript的累赘部分.然而,由于CoffeeScript的语句是直接被转换成JavaScript的, 而不是经过虚拟机或者编译器, CoffeeScript并不能作为挽救JavaScript易出bug的一颗银弹, 并且你还是要注意很多问题.
+there's still some issues you need to be aware about.</p>
 
-<p>First, let's talk about what things the language does solve.</p>
+<p>那么首先, 我们先来看看这门语言解决了哪些问题.</p>
 
-<h2>A JavaScript Subset</h2>
+<h2>一个JavaScript的子集</h2>
 
-<p>CoffeeScript's syntax only covers a subset of JavaScript's, the famous <em>Good Parts</em>, so already there's less to fix. Let's take the <code>with</code> statement for example. This statement has for a long time been "considered harmful", and should be avoided. <code>with</code> was intended to provide a shorthand for writing recurring property lookups on objects. For example, instead of writing:</p>
+<p>CoffeeScript的语法是覆盖了JavaScript的一个子集, 即<em>Good Parts</em>(精粹部分), 因此, 要做修复的部分就少了很多.我们以<code>with</code>语句为例. 这个语句长期以来就被认为是"有害的",而避免使用. 而实际<code>with</code>的初衷是在查找对象的属性是提供一个捷径. 举例来说, 原始的代码如下:</p>
 
 <pre><code>dataObj.users.alex.email = "info@eribium.org";
 </code></pre>
 
-<p>You could write:</p>
+<p>使用<code>with</code>,就是这样:</p>
 
 <pre><code>with(dataObj.users.alex) {
   email = "info@eribium.org";
 }
 </code></pre>
 
-<p>Setting aside the fact that we shouldn't have such a deep object in the first place, the syntax is quite clean. Except for one thing. It's damn confusing to the JavaScript interpreter - it doesn't know exactly what you're going to do in the <code>with</code> context, and forces the specified object to be searched first for all name lookups.</p>
+<p>先抛开我们不该创建一个层级如此之深的对象不说, 这个语法本身是相当简单清晰的. 除了一个问题 - <code>with</code>的使用对于JavaScript翻译器来说是困惑的. 他并不确定你在<code>with</code>的上下文中会做什么, 并且会强制这个特殊的对象在所有的名称查找中首先被查找.</p>
 
-<p>This really hurts performance and means the interpreter has to turn off all sorts of JIT optimizations. Additionally <code>with</code> statements can't be minified using tools like <a href="https://github.com/mishoo/UglifyJS">uglify-js</a>. They're also deprecated and removed from future JavaScript versions. All things considered, it's much better just to avoid using them, and CoffeeScript takes this a step further by eliminating them from it's syntax. In other words, using <code>with</code> in CoffeeScript will throw a syntax error.</p>
+<p>这非常的影响性能,并且意味着解释器会关闭所有的JIT优化项目. 并且<code>with</code>语句不能被类似<a href="https://github.com/mishoo/UglifyJS">uglify-js</a>的工具压缩. 这样一来, 他们也就在将来的JavaScript版本中被废弃了. 考虑所有的一切,避免使用 <code>with</code> 会更好一些, 而在CoffeeScript中, 从语法上面更进一步地防止了对这些的使用. 换句话说, 在CoffeeScript中使用<code>with</code>语句会抛错误.</p>
 
-<h2>Global variables</h2>
+<h2>全局变量</h2>
 
-<p>By default, your JavaScript programs run in a global scope, and by default any variables created are in that global scope. If you want to create a variable in the local scope, JavaScript requires explicitly indicating that fact using the <code>var</code> keyword.</p>
+<p>通常来说,JavaScript程序都是运行在全局作用域中的, 并且默认情况下, 任何的变量都是创建在全局作用域中的. 如果你要创建一个本地作用域的变量, JavaScript需要你显式的使用<code>var</code>关键字声明变量.</p>
 
 <pre><code>usersCount = 1;        // Global
 var groupsCount = 2;   // Global
@@ -62,11 +63,11 @@ var groupsCount = 2;   // Global
 })()
 </code></pre>
 
-<p>This is a bit of an odd decision since the vast majority of the time you'll be creating local variables not global, so why not make that the default? As it stands, developers have to remember to put <code>var</code> statements before any variables they're initializing, or face weird bugs when variables accidentally conflict and overwrite each other.</p>
+<p>这似乎很没有必要这样, 因为大多数时候的你都是在创建本地变量而非全局变量, 因此, 为什么不让创建本地变量是默认的? 因为JavaScript的语法本身, 开发者们都要在变量初始化时在声明语句之前加上<code>var</code>, 否则就有可能产生变量冲突或者变量覆盖等奇怪的问题.</p>
 
-<p>Luckily CoffeeScript comes to your rescue here by eliminating implicit global variable assignment entirely. In other words, the <code>var</code> keyword is reserved in CoffeeScript, and will trigger a syntax error if used. Local variables are created implicitly by default, and it's very difficult to create global variables without explicitly assigning them as properties on <code>window</code>.</p>
+<p>幸运的是,CoffeeScript完全消除全局变量的声明来避免各种问题. 换句话说, <code>var</code>关键词是CoffeeScript的保留字, 如果使用的话就会引发语法错误.本地变量是被默认创建的, 如果不显式的把变量作为<code>window</code>的属性, 要创建全局变量是非常困难的.</p>
 
-<p>Let's have a look at an example of CoffeeScript's variable assignment:</p>
+<p>让我们来看一个CoffeeScript变量赋值的例子:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -75,7 +76,7 @@ do -&gt;
   innerScope = true
 </code></pre>
 
-<p>Compiles down to:</p>
+<p>会被编译成:</p>
 
 <pre><code>var outerScope;
 outerScope = true;
@@ -85,7 +86,7 @@ outerScope = true;
 })();
 </code></pre>
 
-<p>Notice how CoffeeScript initializes variables (using <code>var</code>) automatically in the context their first used. Whilst it's impossible to shadow outer variables, you can still refer to and access them. You need to watch out for this, be careful that you're not reusing the name of an external variable accidentally if you're writing a deeply nested function or class. For example, here we're accidentally overwriting the <code>package</code> variable in a Class function:</p>
+<p>注意CoffeeScript如何在他们被使用的上下文中自动(使用 <code>var</code>)初始化变量. 虽然要覆盖外部变量成为了不可能, 但你依然可以引用并获取它们. 你要注意的是, 如果你是在写一个深层嵌套的函数或类的时候, 你不能重用外部变量的名字. 举例来说, 这里我们在类函数中意外重写了<code>package</code>变量:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -100,7 +101,7 @@ class Hem
     package.create()
 </code></pre>
 
-<p>Global variables are needed from time to time, and to create those you need to set them as properties on <code>window</code>:</p>
+<p>全局变量总会有需要使用的时候, 这时候你需要把这些变量设置为 <code>window</code> 的属性:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -108,30 +109,30 @@ class Hem
     constructor: -&gt;
 </code></pre>
 
-<p>By ensuring global variables are explicit, rather than implicit, CoffeeScript removes one of the major sources of bugs in JavaScript programs.</p>
+<p>在全局变量的声明确定为显式的, 而不是隐式的之后, CoffeeScript排除了JavaScript程序中主要的一个bug来源.</p>
 
-<h2>Semicolons</h2>
+<h2>分号</h2>
 
-<p>JavaScript does not enforce the use of semicolons in source code, so it's possible to omit them. However, behind the scenes the JavaScript compiler still needs them, so the parser automatically inserts them whenever it encounters a parse error due to a missing semicolon. In other words, it'll try to evaluate a statement without semicolons and, if that fails, tries again using semicolons.</p>
+<p>JavaScript在源码中没有强制要求使用分号, 因此使用时你可以省略他们. 但是, JavaScript编译器还是需要分号的, 解析器在遇到由于缺少分号而解析错误时,就会自动的填入分号. 换句话说, 解析器会尝试评估没有分号的语句, 如果执行失败, 解析器就会加上分号重新执行一遍.</p>
 
-<p>Unfortunately this is a tremendously bad idea, and can actually change the behavior of your code. Take the following example, seems valid JavaScript, right?</p>
+<p>不幸的是, 这个方式有一个巨大的问题, 甚至会改变你的代码的本意.看看下面的例子, 看着似乎是正确的JavaScript.</p>
 
 <pre><code>function() {}
 (window.options || {}).property
 </code></pre>
 
-<p>Wrong, well at least according to the parser; it raises a syntax error. In case of a leading parenthesis, the parser will not insert a semicolon. The code gets transformed onto one line:</p>
+<p>错了, 至少在解释器加上分号之后, 它产生了一个语法错误. 在括号运算优先的情况下, 解释器并不会加上分号, 最终的代码会被转化成一行:</p>
 
 <pre><code>function() {}(window.options || {}).property
 </code></pre>
 
-<p>Now you can see the issue, and why the parser is complaining. When you're writing JavaScript, you should always include semicolons after statements. Fortunately CoffeeScript gets round all this hassle by not having semicolons in its syntax. Rather the semicolons are inserted automatically (at the right places) when the CoffeeScript is compiled down to JavaScript.</p>
+<p>现在你明白这个问题了吧, 为什么解释器会产生这样的错. 当你在写JavaScript的时候, 你应该一直记得在语句后面加上分号.幸好CoffeeScript的语法中没有分号,也就不会有这样的麻烦. 分号只是在CoffeeScript编译成JavaScript的时候才被自动加上.</p>
 
-<h2>Reserved words</h2>
+<h2>保留字</h2>
 
-<p>Certain keywords in JavaScript are reserved for future versions of JavaScript, such as <code>const</code>, <code>enum</code> and <code>class</code>. Using these as variable names in your JavaScript programs can unpredictable results; some browsers will cope with them just fine, and others will choke. CoffeeScript neatly sidesteps this issue, by detecting if you're using a reserved keyword, and escaping it if necessary.</p>
+<p>大多数JavaScript中的保留字都是为未来版本的JavaScript而保留,例如<code>const</code>,<code>enum</code>和<code>class</code>.如果在JavaScript程序中使用他们会出现不可预期的结果;有些浏览器可能会正常处理,但是有些浏览器可能不会.CoffeeScript会监测你是否是在使用保留字, 并在必要时做转义, 从而避免了这一问题的发生.</p>
 
-<p>For example, let's say you were to use the reserved keyword <code>class</code> as a property on an object, your CoffeeScript might look like this:</p>
+<p>举个例子, 我们把<code>class</code>作为一个对象的属性, CoffeeScript的代码应该如下:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -141,7 +142,7 @@ class Hem
 myObj.class = -&gt;
 </code></pre>
 
-<p>The CoffeeScript parser notices you're using a reserved keyword, and quotes it for you:</p>
+<p>CoffeeScript的解释器会发现你在使用保留字, 从而给他们多加上了引号:</p>
 
 <pre><code>var myObj;
 myObj = {
@@ -150,9 +151,9 @@ myObj = {
 myObj["class"] = function() {};
 </code></pre>
 
-<h2>Equality comparisons</h2>
+<h2>相同值比较</h2>
 
-<p>The weak equality comparison in JavaScript has some confusing behavior and is often the source of confusing bugs. The example below is taken from <a href="http://bonsaiden.github.com/JavaScript-Garden/#types.equality">JavaScript Garden's equality section</a> which delves into the issue in some depth.</p>
+<p>JavaScript中的值比较总会让人困惑, 并且它往往是一些bug的来源. 下面的例子来自<a href="http://bonsaiden.github.com/JavaScript-Garden/#types.equality">JavaScript秘密花园等值部分</a>, 深入的阐述了这一问题.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -167,13 +168,13 @@ null         ==   undefined     // true
 " \t\r\n"    ==   0             // true
 </code></pre>
 
-<p>The reason behind this behavior is that the weak equality coerces types automatically. I'm sure you'll agree this is all pretty ambiguous, and can lead to unexpected results and bugs.</p>
+<p>问题的源头主要是等值比较时的强制的自动类型转换. 我相信你也一定认为这是很含糊的, 并会引发预计不到的结果和bug.</p>
 
-<p>The solution is to instead use the strict equality operator, which consists of three equal signs: <code>===</code>. It works exactly like the normal equality operator, but without any type coercion. It's recommended to always use the strict equality operator, and explicitly convert types if needs be.</p>
+<p>问题的解决方法是使用全等运算符<code>===</code>. 它会像普通的等价运算符一样, 但是不会做类型的强制转换. 我们建议总是使用全等运算符, 并在必要时显式的转换类型.</p>
 
-<p>CoffeeScript solves this by simply replacing all weak comparisons with strict ones, in other words converting all <code>==</code> comparators into <code>===</code>. You can't do a a weak equality comparison in CoffeeScript, and you should explicitly convert types before comparing them if necessary.</p>
+<p>CoffeeScript把所有的弱类型比较都变成了强类型的比较, 换句话说, 所有的<code>==</code> 都会被转化为<code>===</code>. 在CoffeeScript中你不能使用弱类型比较, 并且在比较值之前, 你应该对比较对象做明确的类型转换.</p>
 
-<p>This doesn't mean you can ignore type coercion in CoffeeScript completely though, especially when it comes to checking the 'truthfulness' of variables during flow control. Blank strings, <code>null</code>, <code>undefined</code> and the number <code>0</code> are all coerced to <code>false</code></p>
+<p>尽管如此, 这并不意味着你在CoffeeScript中可以忽略累赘强制转换, 尤其是在流控制中判断真值的时候. 空字符串,<code>null</code>,<code>undefined</code>和数字<code>0</code>都会被转换为<code>false</code>.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -182,24 +183,24 @@ alert("Empty String") unless ""
 alert("Number 0")     unless 0
 </code></pre>
 
-<p>If you want to explicitly check for <code>null</code> and <code>undefined</code>, then you can use CoffeeScript's existential operator:</p>
+<p>如果你明确只要检查一个值是否是<code>null</code>或者<code>undefined</code>, 那么你就要使用CoffeeScript的存在操作符:</p>
 
 <p><span class="csscript"></span></p>
 
 <pre><code>alert("This is not called") unless ""?
 </code></pre>
 
-<p>The <code>alert()</code> in the previous example won't be called, as the empty string isn't equal to <code>null</code>.</p>
+<p>这里的<code>alert()</code>不会被执行, 因为空字符串不等于<code>null</code>.</p>
 
-<h2>Function definition</h2>
+<h2>函数定义</h2>
 
-<p>Oddly enough in JavaScript, functions can be defined after they're used. For example, the following runs absolutely fine, even though <code>wem</code> is defined after it's called:</p>
+<p>函数在JavaScript真是够奇特的, 函数的定义可以放在函数调用之后. 下面的例子, 尽管<code>wem</code>在调用后才被定义, 但这也完全可以正常运行</p>
 
 <pre><code>wem();
 function wem() {}
 </code></pre>
 
-<p>The is because of function scope. Functions get hoisted before the programs execution and as such are available everywhere in the scope they were defined in, even if called before the actual definition in the source. The trouble is, hoisting behavior differs between browser; for example:</p>
+<p>这都是因为函数作用域的问题. 函数在程序执行前会被预载, 并在它们被定义的作用域中都可以调用, 即便是在源码的函数定义之前也可以被调用. 问题在于, 预载的行为在不同的浏览器中是有区别的; 举例来说:</p>
 
 <pre><code>if (true) {
   function declaration() {
@@ -213,42 +214,43 @@ function wem() {}
 declaration();
 </code></pre>
 
-<p>In some browsers such as Firefox, <code>declaration()</code> will return <code>"first"</code>, and in other browsers like Chrome it'll return <code>"second"</code>, even though it looks like the <code>else</code> statement is never run.</p>
+<p>在例如Firefox的一些浏览器中<code>declaration()</code>会返回<code>"first"</code>, 但在Chrome中, 则会返回<code>"second"</code>, 即便<code>else</code>看着怎么也不会执行.</p>
 
-<p>If you want to know more about declarative functions, then you should read <a href="http://kangax.github.com/nfe/">Juriy Zaytsev's guide</a>, where he delves into the specifics. Suffice to say, they have fairly ambiguous behavior, and can lead to problems later down the road. All things considered, It's best to steer clear of them by using function expressions instead:</p>
+<p>如果你想知道更多函数函数声明的知识, 你应该看看<a href="http://kangax.github.com/nfe/">Juriy Zaytsev的手册</a>, 里面说的很深入. 我想说的是, 函数的定义真的是非常模糊的一行为, 并会经常引发一些问题.综合这一切考虑, 使用函数表达式来定义函数是最好的方式.</p>
 
 <pre><code>var wem = function(){};
 wem();
 </code></pre>
 
-<p>CoffeeScript's approach to this is to remove declarative functions entirely, using only function expressions.</p>
+<p>CoffeeScript中完全去掉了函数的定义,而只保留了函数表达式.</p>
 
-<h2>Number property lookups</h2>
+<h2>数字属性查找</h2>
 
-<p>A flaw in JavaScript's parser means that the <em>dot notation</em> on numbers is interpreted as a floating point literal, rather than a property lookup. For example, the following JavaScript will cause a syntax error:</p>
+<p>JavaScript解析器的一大缺陷在于数字上的<em>点</em>, 会被翻译为一个浮点数, 而不会被认为是属性查找.例如, 下面的JavaScript会产生错误:</p>
 
 <pre><code>5.toString();
 </code></pre>
 
-<p>JavaScript's parser is looking for another Number after the dot, and so raises an <code>Unexpected token</code> error when it encounters <code>toString()</code>. The solution to this is to either use parenthesis, or add an additional dot.</p>
+<p>JavaScript会在点之后寻找一个数字, 但是却出现了<code>toString()</code>于是就引起了<code>Unexpected token</code>的错误.解决办法是,用括号把数字包起来,或者多加一个点.</p>
 
 <pre><code>(5).toString();
 5..toString();
 </code></pre>
 
-<p>Fortunately CoffeeScript's parsers is clever enough to deal with this issue by using double dot notations automatically (as in the example above) whenever you access properties on Numbers.</p>
+<p>幸运的是, CoffeeScript解析器能够自动判断这一场景, 并自动的加上双点.</p>
 
-<h1>The un-fixed parts</h1>
+<h1>未修正的部分</h1>
 
-<p>Whilst CoffeeScript goes some length to solving some of JavaScript's design flaws, it can only go so far. As I mentioned previously, CoffeeScript's strictly limited to static analysis by design, and doesn't do any runtime checking for performance reasons. CoffeeScript uses a straight source-to-source compiler, the idea being that every CoffeeScript statement results in a equivalent JavaScript statement. CoffeeScript doesn't provide an abstraction over any of JavaScript's keywords, such as <code>typeof</code>, and as such some design flaws in JavaScript's design also apply to CoffeeScript.</p>
+<p>虽然CoffeeScript已经解决了很多JavaScript的设计缺陷, 但还有很多没有得到修复. 正如我之前提及的, CoffeeScript通过设计来严格限制静态分析的过程, 但由于性能的原因没有做运行期的检查.CoffeeScript 使用的是简单的源到源的编译器, 这样编译的结果就是一句CoffeeScript会编译成一句对应的JavaScript.此外CoffeeScript对于JavaScript的关键字的使用, 例如<code>typeof</code>, 也没有做任何抽象, 这样一些JavaScript的设计缺陷同样存在于CoffeeScript中.</p>
 
-<p>In the previous sections we covered some design flaws in JavaScript that CoffeeScript fixes. Now let's talk about some of JavaScript's flaws that CoffeeScript can't fix.</p>
+<p>在上一章节, 我们介绍了CoffeeScript对JavaScript部分设计缺陷的修补, 现在我们再来看看CoffeeScript所不能修复的那些缺陷.</p>
 
-<h2>Using eval</h2>
+<h2>使用Eval</h2>
 
-<p>Whilst CoffeeScript removes some of JavaScript's foibles, other features are a necessary evil, you just need to be aware of their shortcomings. A case in point, is the <code>eval()</code> function. Whilst undoubtedly it has its uses, you should know about its drawbacks, and avoid it if possible. The <code>eval()</code> function will execute a string of JavaScript code in the local scope, and functions like <code>setTimeout()</code> and <code>setInterval()</code> can also both take a string as their first argument to be evaluated.</p>
+<p>虽然CoffeeScript去掉了JavaScript的一些问题, 还是遗留了一些引起问题的特性, 你要了解他们的不足所在. 一个典型的例子是, <code>eval</code>函数.虽然毫无疑问, 它有它的用途, 你还是要知道它的缺点, 并尽可能的避免这些缺点. <code>eval</code>
+函数可以在本地作用域中执行一个字符串的JavaScript代码. <code>setTimeout()</code>和<code>setInterval()</code> 同样也具有这样的特性.</p>
 
-<p>However, like <code>with</code>, <code>eval()</code> throws the compiler off track, and is a major performance hog. As the compiler has no idea what's inside until runtime, it can't perform any optimizations like inlining. Another concern is with security. If you give it dirty input, <code>eval</code> can easily open up your code for injection attacks. 99% of the time when you're using <code>eval</code>, there are better &amp; safer alternatives (such as square brackets).</p>
+<p>然而, 就像<code>with</code>一样,<code>eval</code>也把编译器抛在了一边,并且它也存在着严重的性能问题.由于编译器在运行期之外并不知道<code>eval</code>里面到底会执行什么, <code>eval</code>并不能做任何的优化,例如内联.另一方面是安全的问题.如果你输入了一个恶意字串, <code>eval</code>很容易使你的代码受到引起注入的攻击.99%的时候, 当你觉得需要使用<code>eval</code>, 其实会有更好的选择(例如方括号).</p>
 
 <p><span class="csscript"></span></p>
 
@@ -259,18 +261,18 @@ model = eval(modelName)
 model = window[modelName]
 </code></pre>
 
-<h2>Using typeof</h2>
+<h2>使用typeof</h2>
 
-<p>The <code>typeof</code> operator is probably the biggest design flaw of JavaScript, simply because it's basically completely broken. In fact, it really has only one use, checking to see if a value is <code>undefined</code>.</p>
+<p><code>typeof</code>操作符或许是JavaScript设计上的最大的缺陷, 简单说来它是完全的残缺不齐的. 事实上, 它的用处只有一个, 就是检查一个值是否是<code>undefined</code>.</p>
 
 <p><span class="csscript"></span></p>
 
 <pre><code>typeof undefinedVar is "undefined"
 </code></pre>
 
-<p>For all other types of type checking, <code>typeof</code> fails rather miserably, returning inconsistent results depending on the browser and how instances were instantiated. This isn't something that CoffeeScript can help you either, since the language uses static analysis and has no runtime type checking. You're on your own here.</p>
+<p>对于其他所有的类型监测, <code>typeof</code>的检查都很不靠谱, 所返回的结果有时也会根据浏览器以及实例初始化的方式而变化. 当然,CoffeeScript在这方面也改变不了什么, 因为语言只是做了静态的分析,而没有做运行期的检测. 因此你只能靠自己了.</p>
 
-<p>To illustrate the problem, here's a table taken from <a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript Garden</a> which shows some of the major inconstancies in the keyword's type checking.</p>
+<p>为了描述这个问题, 这里我们援引了<a href="http://bonsaiden.github.com/JavaScript-Garden/">JavaScript秘密花园</a>的一张表. 里面罗列了<code>typeof</code>关键词的检查的大多数情况.</p>
 
 <pre><code>Value               Class      Type
 -------------------------------------
@@ -291,9 +293,9 @@ new RegExp("meow")  RegExp     object
 new Object()        Object     object
 </code></pre>
 
-<p>As you can see, depending on if you define a string with quotes or with the <code>String</code> class affects the result of <code>typeof</code>. Logically <code>typeof</code> should return <code>"string"</code> for both checks, but for the latter it returns <code>"object"</code>. Unfortunately the inconstancies only get worse from there.</p>
+<p>你可以看到, 使用引号定义的字符串和<code>String</code>类定义的字符串返回的结果是不一样的. 按理说,<code>typeof</code>应该返回的是<code>"string"</code>, 但是后者却返回了<code>"object"</code>.</p>
 
-<p>So what can we use for type checking in JavaScript? Well, luckily <code>Object.prototype.toString()</code> comes to the rescue here. If we invoke that function in the context of a particular object, it'll return the correct type. All we need to do is massage the string it returns, so we end up with the sort of string <code>typeof</code> should be returning. Here's an example implementation ported from jQuery's <code>$.type</code>:</p>
+<p>那么我们在JavaScript中应该如何检查类型呢? 幸好在JavaScript中我们可以使用<code>Object.prototype.toString()</code>来解决这个问题. 如果我们在普通的对象上下文中运行这个函数, 它就能返回正确的类型. 我们要做的是封装这个函数的返回值, 我们要返回<code>typeof</code>应该返回的值.这里是jQuery的<code>$.type</code>的实现的例子:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -317,7 +319,7 @@ type(null)       # "null"
 type({})         # "object"
 </code></pre>
 
-<p>If you're checking to see if an variable has been defined, you'll still need to use <code>typeof</code> otherwise you'll get a <code>ReferenceError</code>.</p>
+<p>如果你要检查一个变量是否被定义, 你依然应该使用<code>typeof</code>否则你可能会得到<code>ReferenceError</code>.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -325,23 +327,23 @@ type({})         # "object"
   objectType = type(aVar)
 </code></pre>
 
-<p>Or more succinctly with the existential operator:</p>
+<p>或者更简洁一些,我们使用存在操作符:</p>
 
 <pre><code>objectType = type(aVar?)
 </code></pre>
 
-<p>As an alternative to type checking, you can often use duck typing and the CoffeeScript existential operator together to eliminating the need to resolve an object's type. For example, let's say we're pushing a value onto an array. We could say that, as long as the 'array like' object implements <code>push()</code>, we should treat it like an array:</p>
+<p>作为类型检查的一个替代方案, 你可以使用<a href="http://zh.wikipedia.org/wiki/Duck_typing">鸭子类型</a> 以及CoffeeScript的存在操作符来解决对象类型判断的需求.例如, 我们把一个值推入数组. 我们可以说, 如果这个'类数组'的对象具有<code>push()</code>方法, 那我们就认为它是一个数组:</p>
 
 <p><span class="csscript"></span></p>
 
 <pre><code>anArray?.push? aValue
 </code></pre>
 
-<p>If <code>anArray</code> is an object other than an array than the existential operator will ensure that <code>push()</code> is never called.</p>
+<p>如果<code>anArray</code>是一个对象而非一个数组, 那么由于存在操作符的原因, <code>push()</code>永远不会被调用.</p>
 
-<h2>Using instanceof</h2>
+<h2>使用instanceof</h2>
 
-<p>JavaScript's <code>instanceof</code> keyword is nearly as broken as <code>typeof</code>. Ideally <code>instanceof</code> would compare the constructor of two object, returning a boolean if one was an instance of the other. However, in reality <code>instanceof</code> only works when comparing custom made objects. When it comes to comparing built-in types, it's as useless as <code>typeof</code>.</p>
+<p>JavaScript的<code>instanceof</code>关键字的功能残缺程度和<code>typeof</code>有的一拼. 原则上说, <code>instanceof</code>应该对比的是两个对象的构造器, 并返回一个布尔值以表示其中一个是另一个的实例. 然而, 实际使用中, <code>instanceof</code>只能对比用户创建的对象. 对于JavaScript内建的类型则没有什么实际作用.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -349,7 +351,7 @@ type({})         # "object"
 "foo" instanceof String             # false
 </code></pre>
 
-<p>Additionally, <code>instanceof</code> also doesn't work when comparing object from different frames in the browser. In fact, <code>instanceof</code> only returns a correct result for custom made objects, such as CoffeeScript classes.</p>
+<p>并且, <code>instanceof</code> 在对于浏览器中来自不同frame框的对象时也没有作用. 事实上, <code>instanceof</code> 只对创建的对象返回正确的值, 例如CoffeeScript的类.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -361,11 +363,11 @@ child instanceof Child  # true
 child instanceof Parent # true
 </code></pre>
 
-<p>Make sure you only use it for your own objects or, even better, stick clear of it.</p>
+<p>确保你只针对你自己创建的对象使用<code>instanceof</code>, 或者更好的是, 干脆不用它.</p>
 
-<h2>Using delete</h2>
+<h2>使用delete</h2>
 
-<p>The <code>delete</code> keyword can only safely be used for removing properties inside objects.</p>
+<p><code>delete</code>关键字只在删除对象的属性时是安全的.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -374,7 +376,7 @@ delete anObject.one
 anObject.hasOwnProperty("one") # false
 </code></pre>
 
-<p>Any other use, such as deleting variables or function's won't work.</p>
+<p>其他的时候, 例如删除变量或函数则是无效的.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -383,7 +385,7 @@ delete aVar
 typeof Var # "integer"
 </code></pre>
 
-<p>It's rather peculiar behavior, but there you have it. If you want to remove a reference to a variable, just assign it to <code>null</code> instead.</p>
+<p>这真是很奇怪的一种行为!如果你要删除一个变量的引用, 你只能对它赋值<code>null</code>.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -391,27 +393,27 @@ typeof Var # "integer"
 aVar = null
 </code></pre>
 
-<h2>Using parseInt</h2>
+<h2>使用parseInt</h2>
 
-<p>JavaScript's <code>parseInt()</code> function can return unexpected results if you pass a string to it without informing it of the proper base. For example:</p>
+<p>如果你在JavaScript的<code>parseInt()</code>函数时只传递一个字符串而没有同时指定转换的位数, 那么很可能会产生预期不到的结果.</p>
 
 <pre><code># Returns 8, not 10!
 parseInt('010') is 8
 </code></pre>
 
-<p>Always pass a base to the function to make it work correctly:</p>
+<p>保证传位数可以保证函数正常的工作:</p>
 
 <pre><code># Use base 10 for the correct result
 parseInt('010', 10) is 10
 </code></pre>
 
-<p>This isn't something CoffeeScript can do for you; you'll just have to remember to always specify a base when using <code>parseInt()</code>.</p>
+<p>这在CoffeeScript中也没有做什么特殊处理, 你还是要记得在使用<code>parseInt()</code>时多加一个位数的参数.</p>
 
-<h2>Strict mode</h2>
+<h2>严格模式</h2>
 
-<p>Strict mode is a new feature of ECMAScript 5 that allows you to run a JavaScript program or function in a <em>strict</em> context. This strict context throws more exceptions and warnings than the normal context, giving developers some indication when they're straying from best practices, writing un-optimizable code or making common mistakes. In other words, strict mode reduces bugs, increases security, improves performance and eliminates some difficult to use language features. What's not to like?</p>
+<p>严格模式是ECMAScript 5的一个新特性, 它允许你在一个<em>严格</em>的上下文中执行你的JavaScript程序或者函数.这个严格的上下文会比普通的上下文抛出更多的异常和警告, 并开发者偏离最佳实践、编写未优化的代码以及出现常见错误的时侯给与一些提示. 换句话说, 严格模式可以减少bug的数量,增加安全性,并提升性能以消除一些难用的语言特性.有什么理由不喜欢它呢？</p>
 
-<p>Strict mode is currently supported in the following browsers:</p>
+<p>严格模式现在呗一下的浏览器支持:</p>
 
 <ul>
 <li>Chrome >= 13.0</li>
@@ -422,37 +424,37 @@ parseInt('010', 10) is 10
 </ul>
 
 
-<p>Having said that, strict mode is completely backwards compatible with older browsers. Programs using it should run fine in either a strict or normal context.</p>
+<p>并且严格模式是完全向前兼容旧浏览器的. 使用严格模式的程序不管是在严格模式还是在正常模式下面都可以正常的运行.</p>
 
-<h3>Strict mode changes</h3>
+<h3>严格模式的变化</h3>
 
-<p>Most of the changes strict mode introduces pertain to JavaScript's syntax:</p>
+<p>严格模式涉及到的JavaScript语法的变化如下:</p>
 
 <ul>
-<li>Errors on duplicate property and function argument names</li>
-<li>Errors on incorrect use of the <code>delete</code> operator</li>
-<li>Access to <code>arguments.caller</code> &amp; <code>arguments.callee</code> throws an error (for performance reasons)</li>
-<li>Using the <code>with</code> operator will raise a syntax error</li>
-<li>Certain variables such as <code>undefined</code> are no longer writeable</li>
-<li>Introduces additional reserved keywords, such as <code>implements</code>, <code>interface</code>, <code>let</code>, <code>package</code>, <code>private</code>, <code>protected</code>, <code>public</code>, <code>static</code>, and <code>yield</code></li>
+<li>属性重复或者函数参数重名会产生错误</li>
+<li>错误的使用<code>delete</code>操作符会产生错误</li>
+<li>使用<code>arguments.caller</code>和<code>arguments.callee</code>会产生错误(主要由于性能的原因)</li>
+<li>使用<code>with</code>操作符会导致语法错误</li>
+<li>某些变量例如<code>undefined</code>不能被写入</li>
+<li>加入了新的保留字, 例如 <code>implements</code>, <code>interface</code>,<code>let</code>,<code>package</code>,<code>private</code>,<code>protected</code>,<code>public</code>,<code>static</code> 和<code>yield</code></li>
 </ul>
 
 
-<p>However, strict mode also changes some runtime behavior:</p>
+<p>并且, 严格模式也带来运行期行为的变化:</p>
 
 <ul>
-<li>Global variables are explicit (<code>var</code> always required). The global value of <code>this</code> is <code>undefined</code>.</li>
-<li><code>eval</code> can't introduce new variables into the local context</li>
-<li>Function statements have to be defined before they're used (previously functions could be <a href="http://whereswalden.com/2011/01/24/new-es5-strict-mode-requirement-function-statements-not-at-top-level-of-a-program-or-function-are-prohibited/">defined anywhere</a>).</li>
-<li><code>arguments</code> is immutable</li>
+<li>全局变量是显示声明的(必须使用<code>var</code>), 全局的<code>this</code>值是<code>undefined</code></li>
+<li><code>eval</code> 无法在本地上下文中引进新的变量</li>
+<li>函数必须在使用之前被申明(之前函数可以在<a href="http://whereswalden.com/2011/01/24/new-es5-strict-mode-requirement-function-statements-not-at-top-level-of-a-program-or-function-are-prohibited/">任何地方</a>定义)</li>
+<li><code>arguments</code> 是不能被改写的</li>
 </ul>
 
 
-<p>CoffeeScript already abides by a lot of strict mode's requirements, such as always using <code>var</code> when defining variables, but it's still very useful to enable strict mode in your CoffeeScript programs. Indeed, CoffeeScript is taking this a step further and in <a href="https://github.com/jashkenas/coffee-script/issues/1547">future versions</a> will check a program's compliance to strict mode at compile time.</p>
+<p>CoffeeScript已经遵循了大多数的严格模式, 例如定义变量时总是使用var,不过在你的CoffeeScript程序中开启严格模式还是会很有用.事实上,CoffeeScript已经多考虑了一步,并在<a href="https://github.com/jashkenas/coffee-script/issues/1547">未来版本</a>中会在编译时对一个程序进行严格模式的检查.</p>
 
-<h3>Strict mode usage</h3>
+<h3>使用严格模式</h3>
 
-<p>All you need to do to enable strict checking is start your script or function with the following string:</p>
+<p>要开启严格模式, 你只需在你的脚本或函数开始时加入下面这句:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -462,7 +464,7 @@ parseInt('010', 10) is 10
   # ... your code ...
 </code></pre>
 
-<p>That's it, just the <code>'use strict'</code> string. Couldn't be simpler and it's completely backwards compatible. Let's take a look at strict mode in action. The following function will raise a syntax error in strict mode, but run fine in the usual mode:</p>
+<p>就是这个<code>'use strict'</code>字符串. 没有比这更简单的了,并且这是完全向前兼容的. 让我们实际使用一下严格模式. 下面的这个函数会在严格模式下产生一个语法错误,但在普通模式下面运行正常:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -471,9 +473,9 @@ parseInt('010', 10) is 10
   console.log(arguments.callee)
 </code></pre>
 
-<p>Strict mode has removed access to <code>arguments.caller</code> &amp; <code>arguments.callee</code> as they're major performance hogs, and is now throwing syntax errors whenever they're used.</p>
+<p>严格模式中禁止你使用<code>arguments.caller</code> 以及 <code>arguments.callee</code>因为它们可能会带来性能问题, 严格模式会在它们被使用时抛出语法错误.</p>
 
-<p>There's a particular gotcha you should look out for when using strict mode, namely creating global variables with <code>this</code>. The following example will throw a <code>TypeError</code> in strict mode, but run fine in a normal context, creating a global variable:</p>
+<p>你可能注意到在使用严格模式时还有一个特别问题, 即使用<code>this</code>创建全局变量. 下面的例子中会在严格模式中产生一个<code>TypeError</code>, 而在普通模式中则能正常的创建一个全局变量:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -482,7 +484,7 @@ parseInt('010', 10) is 10
   class @Spine
 </code></pre>
 
-<p>The reason behind this disparity is that in strict mode <code>this</code> is <code>undefined</code>, whereas normally it refers to the <code>window</code> object. The solution to this is to explicitly set global variables on the <code>window</code> object.</p>
+<p>区别的原因在于严格模式中<code>this</code>被赋予了<code>undefined</code>, 而通常情况它会指向<code>window</code>对象.解决办法是把全局的变量显式的放到<code>window</code>对象上面.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -491,13 +493,13 @@ parseInt('010', 10) is 10
   class window.Spine
 </code></pre>
 
-<p>Whilst I recommend enabling strict mode, but it's worth noting that strict mode doesn't enable any new features that aren't ready possible in JavaScript, and will actually slow down your code a bit by having the VM do more checks at runtime. You may want to develop with strict mode, and deploy to production without it.</p>
+<p>虽然我推荐使用严格模式, 但是值得一提的是, 严格模式并不会开启任何在JavaScript尚未支持的新特性, 并且严格模式会在运行期由于虚拟机要做更多的检查而减慢你的代码执行. 所以你可以在开发阶段使用严格模式, 而在部署阶段去掉.</p>
 
 <h2>JavaScript Lint</h2>
 
-<p><a href="http://www.javascriptlint.com/">JavaScript Lint</a> is a JavaScript code quality tool, and running your programs through it is a great way of improving code quality and best practices. The project was based on a similar tool called <a href="http://www.jslint.com">JSLint</a>. Check out JSLint's site for a <a href="http://www.jslint.com/lint.html">great list</a> of issues that it checks for, including global variables, missing semicolons and weak equality comparisons.</p>
+<p><a href="http://www.javascriptlint.com/">JavaScript Lint</a> 是一个 JavaScript 代码质量工具, 将你的代码通过它来检查是提升代码质量的很好的方式,甚至是最佳实践.这个项目是基于一个类似的叫做<a href="http://www.jslint.com">JSLint</a>的工具.可以看到JSLint站点上有一个它检查范围的<a href="http://www.jslint.com/lint.html">列表</a>, 包括 全局变量, 丢失分号以及弱类型的对比.</p>
 
-<p>The good news is that CoffeeScript already 'lints' all of its output, so CoffeeScript generated JavaScript is already JavaScript Lint compatible. In fact, the <code>coffee</code> tool has support for a <code>--lint</code> option:</p>
+<p>好消息是CoffeeScript已经对它的输出都做了全部的校验, 因此由CoffeeScript生成的JavaScript是已经经过JavaScript校验的.事实上, <code>coffee</code>命令行已经支持一个<code>--lint</code> 选项:</p>
 
 <pre><code>coffee --lint index.coffee
   index.coffee: 0 error(s), 0 warning(s)
