@@ -9,6 +9,7 @@
 <script src="site/highlight.js" type="text/javascript" charset="utf-8"></script>
 <script src="site/coffee-script.js" type="text/javascript" charset="utf-8"></script>
 <script src="site/preview.js" type="text/javascript" charset="utf-8"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript" charset="utf-8">
   hljs.initHighlightingOnLoad();
 </script>
