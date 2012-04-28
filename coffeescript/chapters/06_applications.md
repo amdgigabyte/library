@@ -3,7 +3,6 @@
 #创建CoffeeScript应用
 
 现在的你应该对语法已经有大致的了解了, 我们就来实际的构建和创建CoffeeScript应用. 希望对本章的阅读会对所有CoffeeScript开发者有帮助,不论是初学者还是高手,事实上,它与纯JavaScript开发者是息息相关的.
-Now you've been given an overview of the syntax, lets explore actually structuring and creating CoffeeScript applications. This section aims to be useful to all CoffeeScript developers, novice or advanced. Indeed, it should be relevant to pure JavaScript developers too. 
 
 由于一些原因, 很多人在编写客户端JavaScript应用的时候, 还是会忘记一些惯例和常用模式, 从而导致了意大利面条式耦合的不易维护的JavaScript.在这里我不想重申一个应用的架构是多么重要; 如果你使用CoffeeScript或者JavaScript不仅仅是编写简单的表单验证, 你应当使用一些例如[MVC](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)的开发模式.
 
@@ -22,7 +21,6 @@ Now you've been given an overview of the syntax, lets explore actually structuri
     User = require("models/user")
     
 对同步载入的支持一直是一个问题, 好在这个问题基本上被最新的CommonJS[提案](http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition)和主流的loader库解决了. 如果你要摒弃我下面会提到的Stitch而采用别的方式,那你可能必须考虑一下别的处理同步载入的方式.
-Synchronous require support is a contentious issue, but has mostly been resolved with the mainstream loader libraries and latest CommonJS [proposals](http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition). It may be something you'll have to look into if you decided to take a separate route than the one I'm advocating with Stitch below. 
 
 ###属性的输出
 
@@ -33,7 +31,6 @@ Synchronous require support is a contentious issue, but has mostly been resolved
       # Some shizzle
     
 这样,当这个模块被载入时,`myFineProperty`就会暴露出来.
-Now, whenever this module is required then `myFineProperty` will be exposed:
 
     myFineProperty = require("random_module").myFineProperty
 
@@ -221,7 +218,6 @@ Stitch会自动编译我们的模板,并在`application.js`中包含它. 然后,
 ##附 - 30秒学会使用Heroku开发
 
 [Heroku](http://heroku.com/) 是一个非常棒的在线程序托管服务, 它可以提供所有的服务器管理和规模化应用托管服务, 让你能够部署各种各样的JavaScript 应用.在开始这个教程前,你要先注册一个Heroku的账户, 好消息是, Heroku的基础服务是完全免费的. 作为一个传统的Ruby的托管服务, Heroku 最近也提供了Node的支持.
-[Heroku](http://heroku.com/) is an incredibly awesome web host that manages all the servers and scaling for you, letting you get on with the exciting stuff (building awesome JavaScript applications). You'll need an account with Heroku for this tutorial to work, but the great news is that their basic plan is completely free. While traditionally a Ruby host, Heroku have recently released their Cedar stack, which includes Node support. 
 
 首先我们要创建一个`Procfile`, 用它来把我们应用的信息告知Heroku.
 
