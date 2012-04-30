@@ -26,9 +26,9 @@
 
 <h1>类</h1>
 
-<p>类在javascritp中发挥的功效很大，就像对付吸血鬼的大蒜头一样，不过话说回来，如果你有这种想法，你很可能不会去看一本coffeescript的书。然而，类在javascript无非只是表现的和它在别的语言里面一样的作用，而coffeescript提供了更好的抽象.</p>
+<p>类在javascript中发挥的功效很大，就像对付吸血鬼的大蒜头一样，不过话说回来，如果你有这种想法，你很可能不会去看一本Coffeescript的书。然而，类在javascript无非只是表现的和它在别的语言里面一样的能力，而在这方面Coffeescript提供了更好的抽象.</p>
 
-<p>CoffeeScript使用了javascript原生的原形来创建类，并且添加了一些静态属性和保持作用域上的语法糖。而这一切都通过 <code>class</code> 关键字提供给开发者</p>
+<p>CoffeeScript使用了Javascript原生的原形来创建类，并且添加了一些静态属性和保持作用域上的语法糖。而这一切都通过 <code>class</code> 关键字提供给开发者.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -69,7 +69,7 @@ alert "Animal is a #{animal.name}"
 
 <h2>实例属性</h2>
 
-<p>给一个类添加额外的实例方法非常的简单。它与对一个对象添加属性的语法一样。只是正确的把方法添加在class之中.</p>
+<p>给一个类添加额外的实例方法非常的简单. 它与对一个对象添加属性的语法一样. 只是把方法添加在class之上.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -82,7 +82,7 @@ animal = new Animal
 animal.sell(new Customer)
 </code></pre>
 
-<p>作用域的改变在Javascript中非常普遍，在之前的语法章节，我们谈及了CoffeeScript可以通过 <code>=&gt;</code> 锁定 <code>this</code> 的值到一个固定的执行上下文上面。这就确保了不论函数在什么作用域下运行，他总会在他创建时的执行上下文下执行.</p>
+<p>作用域的改变在JavaScript中非常普遍，在之前的语法章节，我们谈及了CoffeeScript可以通过 <code>=&gt;</code> 锁定 <code>this</code> 的值到一个固定的执行上下文上面。这就确保了不论函数在什么作用域下运行，它总会在它创建时的执行上下文下执行.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -122,7 +122,7 @@ Animal.find("Parrot")
 
 <h2>继承和超类</h2>
 
-<p>如果没有继承的机制,类的存在也就没有真正的意义, CoffeeScript自然也提供了这方面的语法.你可以使用 <code>extends</code>  关键词从一个类继承自另一个类. 在下面的这个例子中, <code>Parrot</code> 类就继承自 <code>Animal</code> 类, 包括了所有的实例方法, 例如 <code>alive()</code> 方法。</p>
+<p>如果没有继承的机制,类的存在也就没有真正的意义, CoffeeScript自然也提供了这方面的语法.你可以使用 <code>extends</code>关键词从一个类继承自另一个类. 在下面的这个例子中, <code>Parrot</code> 类就继承自 <code>Animal</code> 类, 包括了所有的实例方法, 例如 <code>alive()</code> 方法。</p>
 
 <p><span class="csscript"></span></p>
 
@@ -140,7 +140,7 @@ class Parrot extends Animal
     not @alive()
 </code></pre>
 
-<p>从上一个例子中你可以看到，我们还使用了 <code>super()</code> 关键字. 如此做, this就指向了当前类“父类”的原形, 并且使用当前的作用域来执行. 在对应的js中, 就会生成 <code>Parrot.__super__.constructor.call(this, "Parrot");</code> 这样的一段申明. 实际运用中, 这样就好比是在 Ruby 或者 Python中使用 <code>super</code>, 执行被继承的函数.</p>
+<p>从上一个例子中你可以看到，我们还使用了 <code>super()</code> 关键字. 如此做, this就指向了当前类“父类”的原型, 并且使用当前的作用域来执行. 在对应的js中, 就会生成 <code>Parrot.__super__.constructor.call(this, "Parrot");</code> 这样的一段申明. 实际运用中, 这样就好比是在 Ruby 或者 Python中使用 <code>super</code>, 执行被继承的函数.</p>
 
 <p>通常来说当实例被创建的时候CoffeeScript会执行父类的 <code>constructor</code> 构造函数，除非你自己修改了构造函数.</p>
 
@@ -185,7 +185,7 @@ include Parrot,
 
 <h2>扩展类</h2>
 
-<p>混合(Mixin)非常的简洁优雅，但是他们的写法并没有面向对象. 我们就把Mixin整合进CoffeeScript的类之中. 我们先定义一个叫 <code>Module</code> 的类，通过这个类我们可以继承Mixin的特性. <code>Module</code> 拥有两个静态的方法, <code>@extend()</code> 和 <code>@include()</code>, 通过这两个方法，我们可以分别扩展一个类的静态和实例属性.</p>
+<p>混合(Mixin)非常的简洁优雅, 但是他们的写法并没有面向对象. 我们就把Mixin整合进CoffeeScript的类之中. 我们先定义一个叫 <code>Module</code> 的类,通过这个类我们可以继承Mixin的特性. <code>Module</code> 拥有两个静态的方法, <code>@extend()</code> 和 <code>@include()</code>, 通过这两个方法,我们可以分别扩展一个类的静态和实例属性.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -208,7 +208,8 @@ class Module
     this
 </code></pre>
 
-<p>The little dance around the moduleKeywords variable is to ensure we have callback support when mixins extend a class. 让我们看看 <code>Module</code> 类如何实际的使用:</p>
+<p>moduleKeywords变量所做的工作是确保我们在mixin继承了一个类之后能支持回调.
+让我们看看 <code>Module</code> 类如何实际的使用:</p>
 
 <p><span class="csscript"></span></p>
 

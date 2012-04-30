@@ -26,10 +26,9 @@
 
 <h1>糟粕部分</h1>
 
-<p>JavaScript的特性很奇特, 你在了解你要遵循的部分的同时,还要避免容易产生问题的另一部分. 正如孙子所说:"知己知彼", 我们本章正是要讨论这些, 发现JavaScript的黑暗的那一部分,并揭示这些隐含的问题.从而成为一个让人信任的开发工程师.</p>
+<p>JavaScript的特性很古怪, 你在了解你要遵循的部分的同时,还要避免容易产生问题的另一部分. 正如孙子所说:"知己知彼", 我们本章正是要讨论这些, 发现JavaScript黑暗的那一部分,并揭示这些隐含的问题.从而让你成为一个让人信任的开发工程师.</p>
 
-<p>正如我在介绍中说过的,CoffeeScript的优势不仅仅在于它的语法, 同时它也修复了很多JavaScript的累赘部分.然而,由于CoffeeScript的语句是直接被转换成JavaScript的, 而不是经过虚拟机或者编译器, CoffeeScript并不能作为挽救JavaScript易出bug的一颗银弹, 并且你还是要注意很多问题.
-there's still some issues you need to be aware about.</p>
+<p>正如我在介绍中说过的,CoffeeScript的优势不仅仅在于它的语法, 同时它也修复了很多JavaScript的问题.然而,由于CoffeeScript的语句是直接被转换成JavaScript的, 而不是经过虚拟机或者编译器, CoffeeScript并不能作为挽救JavaScript所有问题的一颗银弹, 你还是有很多问题要注意.</p>
 
 <p>那么首先, 我们先来看看这门语言解决了哪些问题.</p>
 
@@ -49,7 +48,7 @@ there's still some issues you need to be aware about.</p>
 
 <p>先抛开我们不该创建一个层级如此之深的对象不说, 这个语法本身是相当简单清晰的. 除了一个问题 - <code>with</code>的使用对于JavaScript翻译器来说是困惑的. 他并不确定你在<code>with</code>的上下文中会做什么, 并且会强制这个特殊的对象在所有的名称查找中首先被查找.</p>
 
-<p>这非常的影响性能,并且意味着解释器会关闭所有的JIT优化项目. 并且<code>with</code>语句不能被类似<a href="https://github.com/mishoo/UglifyJS">uglify-js</a>的工具压缩. 这样一来, 他们也就在将来的JavaScript版本中被废弃了. 考虑所有的一切,避免使用 <code>with</code> 会更好一些, 而在CoffeeScript中, 从语法上面更进一步地防止了对这些的使用. 换句话说, 在CoffeeScript中使用<code>with</code>语句会抛错误.</p>
+<p>这非常的影响性能,并且意味着解释器会关闭所有的JIT优化项. 并且<code>with</code>语句不能被类似<a href="https://github.com/mishoo/UglifyJS">uglify-js</a>的工具压缩. 这样一来, 他们也就在将来的JavaScript版本中被废弃了. 考虑所有的一切,避免使用 <code>with</code> 会更好一些, 而在CoffeeScript中, 从语法上面更进一步地防止了对这些的使用. 换句话说, 在CoffeeScript中使用<code>with</code>语句会抛错误.</p>
 
 <h2>全局变量</h2>
 
@@ -154,7 +153,7 @@ myObj["class"] = function() {};
 
 <h2>相同值比较</h2>
 
-<p>JavaScript中的值比较总会让人困惑, 并且它往往是一些bug的来源. 下面的例子来自<a href="http://bonsaiden.github.com/JavaScript-Garden/#types.equality">JavaScript秘密花园等值部分</a>, 深入的阐述了这一问题.</p>
+<p>JavaScript中的值比较总会让人困惑, 并且它往往是一些bug的来源. 下面的例子来自<a href="http://bonsaiden.github.com/JavaScript-Garden/#types.equality">JavaScript秘密花园-等值部分</a>, 深入的阐述了这一问题.</p>
 
 <p><span class="csscript"></span></p>
 

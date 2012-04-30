@@ -26,17 +26,17 @@
 
 <h1>创建CoffeeScript应用</h1>
 
-<p>现在的你应该对语法已经有大致的了解了, 我们就来实际的构建和创建CoffeeScript应用. 希望对本章的阅读会对所有CoffeeScript开发者有帮助,不论是初学者还是高手,事实上,它与纯JavaScript开发者是息息相关的.</p>
+<p>现在的你应该对语法已经有大致的了解了, 我们就来实际的构造和创建CoffeeScript应用. 希望对本章的阅读会对所有CoffeeScript开发者有帮助,不论是初学者还是高手,事实上,它与纯JavaScript开发者也是息息相关的.</p>
 
 <p>由于一些原因, 很多人在编写客户端JavaScript应用的时候, 还是会忘记一些惯例和常用模式, 从而导致了意大利面条式耦合的不易维护的JavaScript.在这里我不想重申一个应用的架构是多么重要; 如果你使用CoffeeScript或者JavaScript不仅仅是编写简单的表单验证, 你应当使用一些例如<a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>的开发模式.</p>
 
-<p>构建可维护的大型应用程序并不仅仅意味着构建大的应用. 换句话说, 你需要构建一系列的相互不耦合的组件. 尽可能的保证应用逻辑的通用, 并进行适当的抽象. 最后,把你的逻辑分到view,model，controller(MVC)三层当中. 本章讲不会涉及MVC, 如果你要了解这方面的知识, 我建议你阅读我的另一本书<a href="http://oreilly.com/catalog/9781449307530/">JavaScript Web Applications</a> 并使用<a href="http://documentcloud.github.com/backbone/">Backbone</a> or <a href="https://github.com/maccman/spine">Spine</a>这样的框架. 在这里的话, 我们则会介绍使用CommonJS模块来构建应用.</p>
+<p>构建可维护的大型应用程序并不仅仅意味着构建大的应用. 换句话说, 你需要构建一系列的相互不耦合的组件. 尽可能的保证应用逻辑的通用, 并进行适当的抽象. 最后,把你的逻辑分到view,model，controller(MVC)三层当中. 本章将不会涉及MVC, 如果你要了解这方面的知识, 我建议你阅读我的另一本书<a href="http://oreilly.com/catalog/9781449307530/">JavaScript Web Applications</a> 并使用<a href="http://documentcloud.github.com/backbone/">Backbone</a> 或者 <a href="https://github.com/maccman/spine">Spine</a>这样的框架. 在这里的话, 我们则会介绍使用CommonJS模块来构建应用.</p>
 
-<h2>架构 和 CommonJS</h2>
+<h2>架构和CommonJS</h2>
 
-<p>那么到底什么是CommonJS模块呢?如果你在之前使用过<a href="http://nodejs.org/">NodeJS</a>, 你可能没有意识到你已经在使用CommonJS了.CommonJS规范最初是用在服务器端的JavaScript库上面, 主要解决的是加载,命名空间,作用域等问题. CommonJS旨在在所用的JavaScript实现里都使用通用的形式. CommonJS旨在使工作于<a href="http://www.mozilla.org/rhino/">Rhino</a>的库也可以在Node下面运行. 最终,这些想法都被带到了浏览器中,因而就有了我们现在知道的<a href="http://requirejs.org">RequireJS</a> 和 <a href="https://github.com/jbrantly/yabble">Yabble</a> 这样的库让我们在客户端使用模块.</p>
+<p>那么到底什么是CommonJS模块呢?如果你在之前使用过<a href="http://nodejs.org/">NodeJS</a>, 其实你已经在使用CommonJS了.CommonJS规范最初是用在服务器端的JavaScript库上面, 主要解决的是加载,命名空间,作用域等问题. CommonJS旨在在所用的JavaScript实现里都使用通用的形式. 并且CommonJS旨在使工作于<a href="http://www.mozilla.org/rhino/">Rhino</a>的库也可以在Node下面运行. 最终,这些想法都被带到了浏览器中,因而就有了我们现在知道的<a href="http://requirejs.org">RequireJS</a> 和 <a href="https://github.com/jbrantly/yabble">Yabble</a> 这样的库让我们在客户端使用模块.</p>
 
-<p>老实说, 模块可以确保你的代码在一个本地命名空间下运行(代码封装), 你可以通过<code>require()</code>函数来加载别的模块,也可以使用<code>module.exports</code>来输出模块.接下来我们在深入一些.</p>
+<p>老实说, 模块可以确保你的代码在一个本地命名空间下运行(代码封装), 你可以通过<code>require()</code>函数来加载别的模块,也可以使用<code>module.exports</code>来输出模块.接下来我们再深入一些.</p>
 
 <h3>文件依赖载入</h3>
 
@@ -45,7 +45,7 @@
 <pre><code>User = require("models/user")
 </code></pre>
 
-<p>对同步载入的支持一直是一个问题, 好在这个问题基本上被最新的CommonJS<a href="http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">提案</a>和主流的loader库解决了. 如果你要摒弃我下面会提到的Stitch而采用别的方式,那你可能必须考虑一下别的处理同步载入的方式.</p>
+<p>对同步载入的支持一直是一个问题, 好在这个问题基本上被最新的CommonJS<a href="http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition">提案</a>和主流的loader库解决了. 如果你要摒弃我下面会提到的Stitch而采用别的方式,那你可能必须了解一下这些实现方式.</p>
 
 <h3>属性的输出</h3>
 
@@ -63,7 +63,7 @@ module.exports.myFineProperty = -&gt;
 
 <h2>使用Stitch</h2>
 
-<p>把你的代码使用CommonJS的模块来组织固然好, 但是我们如何在客户端来做呢?我选择的是一个闻所未闻的<a href="https://github.com/sstephenson/stitch">Stitch</a> 库.Stitch是Sam Stephenson写的, 它的基于<a href="http://www.prototypejs.org">Prototype.js</a>并解决了模块的问题,这是我用它的最大动机.
+<p>把你的代码使用CommonJS的模块来组织固然好, 但是我们如何在客户端来做呢?我选择的是一个闻所未闻的<a href="https://github.com/sstephenson/stitch">Stitch</a> 库.Stitch是Sam Stephenson写的, 它基于<a href="http://www.prototypejs.org">Prototype.js</a>并解决了模块的问题,这是我用它的最大动机.
 与其他通过动态加载模块的库不同的是,Stitch 简单的把所有的JavaScript捆绑为同一个,并用CommonJS进行封装. 哦, 对了, 它还会编译你的CoffeeScript, JS模板, <a href="http://lesscss.org">LESS CSS</a> 和 <a href="http://sass-lang.com">Sass</a> 文件!</p>
 
 <p>首先如果你没有安装<a href="http://nodejs.org/">Node.js</a> 和 <a href="http://npmjs.org/">npm</a>你要先进行安装. 它们会在本章的例子中一直被用到.</p>
@@ -291,7 +291,7 @@ heroku open
 
 <p>而对于应用服务, <a href="http://github.com/maccman/hem">Hem</a>是一个很好的选择, 它支持CommonJS和NPM模块,并无缝整合了CoffeeScript的MVC框架<a href="http://spinejs.com">Spine</a>. <a href="https://github.com/substack/node-browserify">node-browsify</a>是另一个类似的项目.或者你想整合<a href="http://expressjs.com/">express</a>, 你可以选择Trevor Burnham的 <a href="https://github.com/TrevorBurnham/connect-assets">connect-assets</a></p>
 
-<p>在CoffeeScript的<a href="https://github.com/jashkenas/coffee-script/wiki/Web-framework-plugins">项目 wiki</a>上面, 你可以找到一个CoffeeScriptweb框架插件的完整列表.</p>
+<p>在CoffeeScript的<a href="https://github.com/jashkenas/coffee-script/wiki/Web-framework-plugins">项目 wiki</a>上面, 你可以找到一个CoffeeScript web框架插件的完整列表.</p>
 
   </div>
 </div>

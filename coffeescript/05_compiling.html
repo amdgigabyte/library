@@ -39,9 +39,9 @@
 
 <p><a href="http://jashkenas.github.com/coffee-script/#cake">Cake</a>是一个通过<a href="http://www.gnu.org/software/make/">Make</a>和<a href="http://rake.rubyforge.org/">Rake</a>实现的非常简单的构建系统. 它是捆绑在<code>coffeee-script</code>包上面的一个库，我们可以通过<code>cake</code>命令来使用它.</p>
 
-<p>你可以创建 <code>cakefile</code>来定义构建的任务.通过<code>cake [task] [option]</code>的方式,Cake可以在会在当前目录自动寻找配置,并执行构建任务. 要列出所有的任务和选项, 只需输入<code>cake</code>即可.</p>
+<p>你可以创建 <code>cakefile</code>来定义构建的任务.通过<code>cake [task] [option]</code>的方式,Cake可以在会在当前目录自动寻找配置,并执行构建任务.要列出所有的任务和选项,只需输入<code>cake</code>即可.</p>
 
-<p>我们可以通过<code>task()</code>函数来定义任务, 它接受一个名称参数,一个可选描述和一个回调函数.举一个例子, 我们创建一个<code>Cakefile</code>和两个目录, <code>lib</code>和<code>src</code>. 并把下面的这些添加到<code>Cakefile</code>中:</p>
+<p>我们可以通过<code>task()</code>函数来定义任务,它接受一个名称参数,一个可选描述和一个回调函数.举一个例子, 我们创建一个<code>Cakefile</code>和两个目录, <code>lib</code>和<code>src</code>. 并把下面的这些添加到<code>Cakefile</code>中:</p>
 
 <p><span class="csscript"></span></p>
 
@@ -100,7 +100,7 @@ task 'build', 'Build lib/ from src/', -&gt;
   invoke 'watch'
 </code></pre>
 
-<p>你也可以使用<code>option()</code>函数来定义任务的选项,一个选项包含一个短名称, 一个长名称和描述.</p>
+<p>你也可以使用<code>option()</code>函数来定义任务的选项,一个选项包含一个参数短名称, 一个参数全名和描述.</p>
 
 <p><span class="csscript"></span></p>
 
@@ -129,7 +129,7 @@ task 'build', 'Build lib/ from src/', -&gt;
 
 <p>Django通过特殊的模块标签也对CoffeeScript提供了<a href="http://pypi.python.org/pypi/django-coffeescript/">支持</a>,它同时支持行内脚本和外部脚本.</p>
 
-<p>不管是Ruby还是Python,都会输出到 Node 中,然后通过CoffeeScript库来进行编译,因此在开发时要确保这些都已经安装了. 如果你的网站直接是用Node搭建的, 整合Coffeescript就更简单了,你也可以在前后端同时使用CoffeeScript.我们会在下一章详细介绍这个, 并使用<a href="https://github.com/sstephenson/stitch">Stitch</a>来提供客户端的CoffeeScript服务.</p>
+<p>不管是Ruby还是Python编译,最终都会输出到Node中,然后通过CoffeeScript库来进行编译,因此在开发时要确保这些都已经安装了. 如果你的网站直接是用Node搭建的, 整合Coffeescript就更简单了,你也可以在前后端同时使用CoffeeScript.我们会在下一章详细介绍这个, 并使用<a href="https://github.com/sstephenson/stitch">Stitch</a>来提供客户端的CoffeeScript服务.</p>
 
   </div>
 </div>
