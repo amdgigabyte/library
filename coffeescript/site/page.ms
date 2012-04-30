@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset=utf-8>
-<title>The Little Book on CoffeeScript - {{name}}</title>
+<title>CoffeeScript袖珍手册 - {{name}}</title>
 <link rel="stylesheet" href="site/site.css" type="text/css" charset="utf-8">
 <link rel="stylesheet" href="site/highlight.css" type="text/css" charset="utf-8">
 <script src="site/jquery.js" type="text/javascript" charset="utf-8"></script>      
@@ -17,7 +17,7 @@
 <body>
 <div id="container">
   <header>
-    <h1><a href="index.html">The Little Book on CoffeeScript</a></h1>
+    <h1><a href="index.html">CoffeeScript袖珍手册</a></h1>
   </header>
   
   <div id="content">
